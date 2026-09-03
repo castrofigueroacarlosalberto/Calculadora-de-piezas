@@ -1,0 +1,590 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despiece y Optimización de Melamina</title>
+    
+    <!-- Librería para descargar PDF directamente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; background: #fff; padding: 30px; margin: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        h2, h3 { color: #0056b3; text-align: center; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; }
+        
+        /* --- SELECTOR DE UNIDADES --- */
+        .unit-selector-container {
+            display: flex; align-items: center; justify-content: space-between;
+            background-color: #f8f9fa; padding: 15px 25px; border-radius: 8px;
+            margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid #e9ecef;
+        }
+        .unit-selector-label { font-weight: 700; color: #495057; font-size: 15px; margin: 0; }
+        .unit-toggle { display: flex; background: #e9ecef; border-radius: 8px; padding: 4px; }
+        .unit-btn {
+            background: transparent; border: none; padding: 8px 18px; border-radius: 6px;
+            font-size: 14px; font-weight: 600; color: #6c757d; cursor: pointer; transition: all 0.3s ease;
+        }
+        .unit-btn.active { background: #fff; color: #0056b3; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .unit-btn:hover:not(.active) { color: #495057; }
+
+        /* Secciones y Layout */
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .config-section { 
+            padding: 20px 15px; background: #f8f9fa; border: 1px solid #e9ecef; 
+            border-radius: 8px; margin-bottom: 15px; display: flex; flex-direction: column; 
+        }
+        
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #495057; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; transition: border-color 0.2s; }
+        
+        button.btn-primary { background-color: #0056b3; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
+        button.success { background-color: #28a745; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
+        button.warning { background-color: #ffc107; color: #212529; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
+
+        /* Botones de Exportación */
+        .btn-export { border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; color: white; flex: 1; font-size: 14px;}
+        .pdf-btn { background-color: #dc3545; }
+        .excel-btn { background-color: #198754; }
+        .export-container { display: flex; gap: 10px; margin-top: 10px; }
+
+        /* Visor de Pieza Dinámico */
+        .piece-container { display: grid; grid-template-columns: 50px 180px 50px; grid-template-rows: 50px 180px 50px; gap: 8px; align-items: center; justify-items: center; margin: 25px auto; width: max-content; }
+        .piece-center-wrapper { grid-column: 2; grid-row: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .piece-box { background-color: #e6d3c0; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.05) 10px, rgba(139, 90, 43, 0.05) 20px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; box-sizing: border-box; overflow: hidden; border-radius: 4px; }
+        .texto-medida { background-color: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 13px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* Botones de Descuento */
+        .discount-btn { 
+            background-color: #ffffff; border: 2px solid #ced4da; border-radius: 8px; color: #495057; cursor: pointer; 
+            font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap;
+        }
+        .discount-btn.active { background-color: #ff6b6b; color: white; border-color: #fa5252; }
+        
+        .btn-top { grid-column: 2; grid-row: 1; width: 100%; height: 100%; }
+        .btn-bottom { grid-column: 2; grid-row: 3; width: 100%; height: 100%; }
+        .btn-left { grid-column: 1; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; transform: rotate(180deg); }
+        .btn-right { grid-column: 3; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; }
+
+        /* Contenedor de la Tabla */
+        .table-scroll-container {
+            flex-grow: 1; overflow-y: auto; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #ced4da; background: white; min-height: 250px; margin-bottom: 20px;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 0; background: white;}
+        th, td { border-bottom: 1px solid #e9ecef; padding: 12px 10px; text-align: center; font-size: 14px; vertical-align: middle;}
+        th { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; color: #495057; position: sticky; top: 0; z-index: 10; }
+        
+        .btn-action { margin: 0; padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .btn-edit { background: #e0f3ff; color: #0056b3; border: 1px solid #b8e1ff; }
+        .btn-delete { background: #ffe3e3; color: #dc3545; border: 1px solid #ffc9c9; }
+        .actions-cell { display: flex; gap: 8px; justify-content: center; align-items: center; }
+
+        /* Planos de Corte */
+        .boards-container { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .board-visual { position: relative; background-color: #fdf5e6; border: 2px solid #8b5a2b; margin: 0 auto; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
+        .cut-piece { position: absolute; background-color: #e6d3c0; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.05) 10px, rgba(139, 90, 43, 0.05) 20px); border: 1px solid #8b5a2b; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #4a2f1d; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;}
+        .board-title { text-align: center; font-weight: bold; margin-bottom: 5px; color: #8b5a2b; font-size: 16px;}
+
+        /* --- CLASES ESPECIALES PARA CUANDO SE GENERA EL PDF --- */
+        .exporting-pdf .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; }
+        
+        .exporting-pdf .unit-selector-container,
+        .exporting-pdf .columna-izquierda,
+        .exporting-pdf .btn-primary,
+        .exporting-pdf .export-container,
+        .exporting-pdf th:last-child, /* Oculta cabecera de acciones */
+        .exporting-pdf td:last-child  /* Oculta botones Editar/Quitar */
+        { display: none !important; }
+        
+        .exporting-pdf .grid-layout { display: block !important; }
+        .exporting-pdf .columna-derecha { width: 100% !important; }
+        
+        .exporting-pdf .table-scroll-container { 
+            max-height: none !important; 
+            overflow: visible !important; 
+            border: 1px solid #ccc !important; 
+            box-shadow: none !important; 
+            margin-bottom: 30px !important;
+        }
+        
+        .exporting-pdf .board-visual { page-break-inside: avoid; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app-container">
+        <h2>Reporte de Despiece y Optimización</h2>
+        
+        <!-- SELECTOR DE UNIDADES -->
+        <div class="unit-selector-container">
+            <p class="unit-selector-label">Unidad de medida preferida:</p>
+            <div class="unit-toggle">
+                <button class="unit-btn active" id="btn-mm" onclick="cambiarUnidad('mm')">Milímetros</button>
+                <button class="unit-btn" id="btn-cm" onclick="cambiarUnidad('cm')">Centímetros</button>
+                <button class="unit-btn" id="btn-m" onclick="cambiarUnidad('m')">Metros</button>
+            </div>
+        </div>
+
+        <div class="grid-layout">
+            <!-- Columna Izquierda -->
+            <div class="columna-izquierda" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="config-section">
+                    <h3>1. Configuración Principal</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label id="lblHojaAlto">Hoja Alto (mm)</label>
+                            <input type="number" id="hojaAlto" value="2440">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label id="lblHojaAncho">Hoja Ancho (mm)</label>
+                            <input type="number" id="hojaAncho" value="1220">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label id="lblGrosor">Grosor (mm)</label>
+                            <select id="grosor" onchange="calcular()">
+                                <option value="15" data-mm="15">15 mm</option>
+                                <option value="18" data-mm="18">18 mm</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section" style="flex-grow: 1; margin-bottom: 0;">
+                    <h3>2. Crear / Editar Pieza</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label id="lblPiezaAlto">Alto (mm)</label>
+                            <input type="number" id="piezaAlto" value="1500" oninput="calcular()">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label id="lblPiezaAncho">Ancho (mm)</label>
+                            <input type="number" id="piezaAncho" value="500" oninput="calcular()">
+                        </div>
+                    </div>
+
+                    <div class="piece-container">
+                        <button id="btnTop" class="discount-btn btn-top" onclick="toggleDiscount('top')">- 15 mm</button>
+                        <button id="btnLeft" class="discount-btn btn-left" onclick="toggleDiscount('left')">- 15 mm</button>
+                        <div class="piece-center-wrapper">
+                            <div class="piece-box" id="visualizadorPieza">
+                                <span class="texto-medida" id="textoMedida">1500 x 500</span>
+                            </div>
+                        </div>
+                        <button id="btnRight" class="discount-btn btn-right" onclick="toggleDiscount('right')">- 15 mm</button>
+                        <button id="btnBottom" class="discount-btn btn-bottom" onclick="toggleDiscount('bottom')">- 15 mm</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre/Referencia de la pieza</label>
+                        <input type="text" id="nombrePieza" placeholder="Ej. Puerta Alacena" value="Pieza 1">
+                    </div>
+                    
+                    <button id="btnAgregarPieza" class="success" onclick="agregarPieza()" style="margin-top: auto;">+ Añadir a Lista de Cortes</button>
+                </div>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="columna-derecha" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="config-section" style="flex-grow: 1; margin-bottom: 0;">
+                    <h3>3. Lista de Cortes</h3>
+                    
+                    <div class="table-scroll-container">
+                        <table id="tablaCortes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Medida Final</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Las piezas aparecen aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Botón Generar Plano -->
+                    <button class="btn-primary" onclick="optimizarCortes()" style="margin-top: auto; font-size: 16px;">Generar Plano de Corte</button>
+                    
+                    <!-- BOTONES DE EXPORTAR -->
+                    <div class="export-container">
+                        <button class="btn-export pdf-btn" onclick="exportarPDF()">📄 Descargar PDF</button>
+                        <button class="btn-export excel-btn" onclick="exportarExcel()">📊 Descargar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultadosOptimizacion" style="margin-top: 30px; display: none;">
+            <h3>4. Planos de Corte</h3>
+            <p id="resumenHojas" style="text-align: center; font-size: 18px; font-weight: bold; color: #28a745;"></p>
+            <div id="contenedorHojas" class="boards-container"></div>
+        </div>
+    </div>
+
+    <script>
+        let listaCortes = [];
+        let descuentos = { top: false, bottom: false, left: false, right: false };
+        let unidadActual = 'mm';
+        const factoresUnidad = { 'mm': 1, 'cm': 10, 'm': 1000 };
+        const KERF_BASE_MM = 3; 
+        let kerfActual = 3;     
+        
+        let idPiezaEnEdicion = null; 
+
+        function cambiarUnidad(nuevaUnidad) {
+            if (nuevaUnidad === unidadActual) return;
+            document.querySelectorAll('.unit-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + nuevaUnidad).classList.add('active');
+
+            const factorConversion = factoresUnidad[unidadActual] / factoresUnidad[nuevaUnidad];
+            ['hojaAlto', 'hojaAncho', 'piezaAlto', 'piezaAncho'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el.value) { el.value = Number((parseFloat(el.value) * factorConversion).toFixed(4)); }
+            });
+
+            const grosorSelect = document.getElementById('grosor');
+            Array.from(grosorSelect.options).forEach(opt => {
+                const mmBase = parseFloat(opt.getAttribute('data-mm'));
+                const valorConvertido = mmBase / factoresUnidad[nuevaUnidad];
+                opt.value = valorConvertido;
+                opt.text = `${Number(valorConvertido.toFixed(4))} ${nuevaUnidad}`;
+            });
+
+            kerfActual = KERF_BASE_MM / factoresUnidad[nuevaUnidad];
+
+            listaCortes.forEach(p => {
+                p.altoFinal = Number((p.altoFinal * factorConversion).toFixed(4));
+                p.anchoFinal = Number((p.anchoFinal * factorConversion).toFixed(4));
+                p.altoOriginal = Number((p.altoOriginal * factorConversion).toFixed(4));
+                p.anchoOriginal = Number((p.anchoOriginal * factorConversion).toFixed(4));
+            });
+
+            document.getElementById('lblHojaAlto').innerText = `Hoja Alto (${nuevaUnidad})`;
+            document.getElementById('lblHojaAncho').innerText = `Hoja Ancho (${nuevaUnidad})`;
+            document.getElementById('lblGrosor').innerText = `Grosor (${nuevaUnidad})`;
+            document.getElementById('lblPiezaAlto').innerText = `Alto (${nuevaUnidad})`;
+            document.getElementById('lblPiezaAncho').innerText = `Ancho (${nuevaUnidad})`;
+
+            unidadActual = nuevaUnidad;
+            actualizarTabla();
+            calcular();
+            document.getElementById('resultadosOptimizacion').style.display = 'none';
+        }
+
+        function toggleDiscount(side) {
+            descuentos[side] = !descuentos[side];
+            calcular();
+        }
+
+        function calcular() {
+            const grosor = parseFloat(document.getElementById('grosor').value);
+            
+            const textoDescuento = `- ${Number(grosor.toFixed(4))} ${unidadActual}`;
+            ['btnTop', 'btnBottom', 'btnLeft', 'btnRight'].forEach(id => document.getElementById(id).innerText = textoDescuento);
+
+            ['top', 'bottom', 'left', 'right'].forEach(side => {
+                const btn = document.getElementById('btn' + side.charAt(0).toUpperCase() + side.slice(1));
+                descuentos[side] ? btn.classList.add('active') : btn.classList.remove('active');
+            });
+
+            const alto = parseFloat(document.getElementById('piezaAlto').value) || 0;
+            const ancho = parseFloat(document.getElementById('piezaAncho').value) || 0;
+
+            let altoF = Number((alto - (descuentos.top ? grosor : 0) - (descuentos.bottom ? grosor : 0)).toFixed(4));
+            let anchoF = Number((ancho - (descuentos.left ? grosor : 0) - (descuentos.right ? grosor : 0)).toFixed(4));
+
+            document.getElementById('textoMedida').innerText = `${altoF} x ${anchoF} ${unidadActual}`;
+
+            const visor = document.getElementById('visualizadorPieza');
+            visor.style.borderTop = descuentos.top ? '6px solid #ff6b6b' : '3px solid #8b5a2b';
+            visor.style.borderBottom = descuentos.bottom ? '6px solid #ff6b6b' : '3px solid #8b5a2b';
+            visor.style.borderLeft = descuentos.left ? '6px solid #ff6b6b' : '3px solid #8b5a2b';
+            visor.style.borderRight = descuentos.right ? '6px solid #ff6b6b' : '3px solid #8b5a2b';
+
+            let pWidth = 160, pHeight = 160;
+            if (alto > 0 && ancho > 0) {
+                if (alto > ancho) { pWidth = (ancho / alto) * 160; } 
+                else { pHeight = (alto / ancho) * 160; }
+            }
+            visor.style.width = Math.max(pWidth, 35) + 'px';
+            visor.style.height = Math.max(pHeight, 35) + 'px';
+
+            return { altoF, anchoF };
+        }
+
+        function agregarPieza() {
+            const medidas = calcular();
+            const nombre = document.getElementById('nombrePieza').value || 'Pieza';
+            const altoInput = parseFloat(document.getElementById('piezaAlto').value) || 0;
+            const anchoInput = parseFloat(document.getElementById('piezaAncho').value) || 0;
+            
+            if(medidas.altoF <= 0 || medidas.anchoF <= 0) { alert("Las medidas no pueden ser 0 o negativas."); return; }
+
+            if (idPiezaEnEdicion !== null) {
+                const index = listaCortes.findIndex(p => p.id === idPiezaEnEdicion);
+                if (index !== -1) {
+                    listaCortes[index] = { id: idPiezaEnEdicion, nombre: nombre, altoFinal: medidas.altoF, anchoFinal: medidas.anchoF, altoOriginal: altoInput, anchoOriginal: anchoInput, descuentosAplicados: { ...descuentos } };
+                }
+                idPiezaEnEdicion = null;
+                document.getElementById('btnAgregarPieza').innerText = "+ Añadir a Lista de Cortes";
+                document.getElementById('btnAgregarPieza').className = "success";
+            } else {
+                listaCortes.push({ id: Date.now(), nombre: nombre, altoFinal: medidas.altoF, anchoFinal: medidas.anchoF, altoOriginal: altoInput, anchoOriginal: anchoInput, descuentosAplicados: { ...descuentos } });
+            }
+
+            document.getElementById('nombrePieza').value = '';
+            document.getElementById('nombrePieza').focus();
+            actualizarTabla();
+            
+            if (idPiezaEnEdicion === null) {
+                const contenedorTabla = document.querySelector('.table-scroll-container');
+                contenedorTabla.scrollTop = contenedorTabla.scrollHeight;
+            }
+        }
+
+        function editarPieza(id) {
+            const pieza = listaCortes.find(p => p.id === id);
+            if (!pieza) return;
+            idPiezaEnEdicion = id;
+            document.getElementById('piezaAlto').value = pieza.altoOriginal;
+            document.getElementById('piezaAncho').value = pieza.anchoOriginal;
+            document.getElementById('nombrePieza').value = pieza.nombre;
+            descuentos = { ...pieza.descuentosAplicados };
+
+            const btnAgregar = document.getElementById('btnAgregarPieza');
+            btnAgregar.innerText = "Guardar Cambios";
+            btnAgregar.className = "warning"; 
+            calcular();
+            actualizarTabla();
+        }
+
+        function eliminarPieza(id) {
+            listaCortes = listaCortes.filter(p => p.id !== id);
+            if (idPiezaEnEdicion === id) {
+                idPiezaEnEdicion = null;
+                document.getElementById('btnAgregarPieza').innerText = "+ Añadir a Lista de Cortes";
+                document.getElementById('btnAgregarPieza').className = "success";
+            }
+            actualizarTabla();
+        }
+
+        function actualizarTabla() {
+            const tbody = document.querySelector('#tablaCortes tbody');
+            tbody.innerHTML = '';
+            listaCortes.forEach(p => {
+                const trStyle = (p.id === idPiezaEnEdicion) ? "background-color: #fff9e6; border-left: 4px solid #ffc107;" : "";
+                tbody.innerHTML += `
+                    <tr style="${trStyle}">
+                        <td><strong>${p.nombre}</strong></td>
+                        <td>${p.altoFinal} x ${p.anchoFinal} ${unidadActual}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-action btn-edit" onclick="editarPieza(${p.id})">Editar</button>
+                                <button class="btn-action btn-delete" onclick="eliminarPieza(${p.id})">Quitar</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        /* --- EXPORTAR DIRECTO A PDF CORREGIDO --- */
+        function exportarPDF() {
+            if (listaCortes.length === 0) {
+                alert("La lista está vacía. Añade piezas antes de exportar.");
+                return;
+            }
+
+            // 1. Añadimos la clase para ocultar menús y botones
+            document.body.classList.add('exporting-pdf');
+            
+            // 2. Usamos setTimeout para darle tiempo al navegador de ocultar los botones
+            // ANTES de que html2pdf tome la captura de la pantalla.
+            setTimeout(() => {
+                const elemento = document.getElementById('app-container');
+
+                const opciones = {
+                    margin:       10,
+                    filename:     'Despiece_Melamina.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // 3. Generamos el PDF. Usamos ".then()" para asegurarnos de que la 
+                // descarga haya terminado ANTES de volver a mostrar los botones.
+                html2pdf().set(opciones).from(elemento).save().then(() => {
+                    document.body.classList.remove('exporting-pdf');
+                }).catch(error => {
+                    console.error("Error generando el PDF:", error);
+                    document.body.classList.remove('exporting-pdf');
+                    alert("Ocurrió un error al generar el PDF.");
+                });
+                
+            }, 300); // 300 milisegundos de espera
+        }
+
+        /* --- EXPORTAR DIRECTO A EXCEL --- */
+        function exportarExcel() {
+            if (listaCortes.length === 0) {
+                alert("La lista está vacía. Añade piezas antes de exportar.");
+                return;
+            }
+
+            let tablaHTML = `
+                <tr>
+                    <th style="background-color: #0056b3; color: white;">Nombre / Referencia</th>
+                    <th style="background-color: #0056b3; color: white;">Alto Final (${unidadActual})</th>
+                    <th style="background-color: #0056b3; color: white;">Ancho Final (${unidadActual})</th>
+                </tr>
+            `;
+
+            listaCortes.forEach(p => {
+                tablaHTML += `<tr><td>${p.nombre}</td><td>${p.altoFinal}</td><td>${p.anchoFinal}</td></tr>`;
+            });
+
+            let templateExcel = `
+                <html xmlns:x="urn:schemas-microsoft-com:office:excel">
+                    <head><meta charset="utf-8"></head>
+                    <body><h3>Lista de Cortes de Melamina</h3><table border="1">${tablaHTML}</table></body>
+                </html>
+            `;
+
+            let blob = new Blob([templateExcel], { type: 'application/vnd.ms-excel' });
+            let url = URL.createObjectURL(blob);
+            
+            let enlace = document.createElement('a');
+            enlace.href = url;
+            enlace.download = 'Lista_de_Cortes.xls';
+            document.body.appendChild(enlace);
+            enlace.click();
+            document.body.removeChild(enlace);
+        }
+
+        class Packer {
+            constructor(w, h) { this.root = { x: 0, y: 0, w: w, h: h }; }
+            fit(blocks) {
+                let node;
+                for (let n = 0; n < blocks.length; n++) {
+                    let block = blocks[n];
+                    if (node = this.findNode(this.root, block.w, block.h)) {
+                        block.fit = this.splitNode(node, block.w, block.h);
+                    } else if (node = this.findNode(this.root, block.h, block.w)) {
+                        let temp = block.w; block.w = block.h; block.h = temp;
+                        block.rotated = true;
+                        block.fit = this.splitNode(node, block.w, block.h);
+                    }
+                }
+            }
+            findNode(root, w, h) {
+                if (root.used) return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
+                else if ((w <= root.w) && (h <= root.h)) return root;
+                else return null;
+            }
+            splitNode(node, w, h) {
+                node.used = true;
+                node.down  = { x: node.x, y: node.y + h, w: node.w, h: node.h - h };
+                node.right = { x: node.x + w, y: node.y, w: node.w - w, h: h };
+                return node;
+            }
+        }
+
+        function optimizarCortes() {
+            if(listaCortes.length === 0) { alert("Añade al menos una pieza a la lista."); return; }
+
+            const hojaW = parseFloat(document.getElementById('hojaAncho').value);
+            const hojaH = parseFloat(document.getElementById('hojaAlto').value);
+
+            let bloques = listaCortes.map(p => ({
+                id: p.id, nombre: p.nombre, w: p.anchoFinal + kerfActual, h: p.altoFinal + kerfActual,
+                originalW: p.anchoFinal, originalH: p.altoFinal
+            })).sort((a, b) => (b.w * b.h) - (a.w * a.h));
+
+            let hojasUtilizadas = [];
+            let bloquesPendientes = [...bloques];
+
+            while(bloquesPendientes.length > 0) {
+                let packer = new Packer(hojaW, hojaH);
+                packer.fit(bloquesPendientes);
+                
+                let hojaActual = { bloquesAsignados: [] };
+                let bloquesSobrantes = [];
+
+                bloquesPendientes.forEach(b => {
+                    if(b.fit) hojaActual.bloquesAsignados.push(b);
+                    else bloquesSobrantes.push(b);
+                });
+
+                hojasUtilizadas.push(hojaActual);
+                bloquesPendientes = bloquesSobrantes;
+            }
+
+            dibujarHojas(hojasUtilizadas, hojaW, hojaH);
+        }
+
+        function dibujarHojas(hojas, hojaW, hojaH) {
+            document.getElementById('resultadosOptimizacion').style.display = 'block';
+            document.getElementById('resumenHojas').innerText = `Total de hojas necesarias: ${hojas.length}`;
+            
+            const contenedor = document.getElementById('contenedorHojas');
+            contenedor.innerHTML = '';
+
+            const escala = 800 / hojaH;
+            const visualW = hojaW * escala;
+            const visualH = hojaH * escala;
+
+            hojas.forEach((hoja, index) => {
+                let htmlHoja = `<div class="board-title">Hoja ${index + 1} (${hojaH} x ${hojaW} ${unidadActual})</div>`;
+                htmlHoja += `<div class="board-visual" style="width: ${visualW}px; height: ${visualH}px;">`;
+
+                hoja.bloquesAsignados.forEach(b => {
+                    const pW = (b.w - kerfActual) * escala;
+                    const pH = (b.h - kerfActual) * escala;
+                    const pX = b.fit.x * escala;
+                    const pY = b.fit.y * escala;
+                    const rotadaText = b.rotated ? '<br><em>(Rotada)</em>' : '';
+                    
+                    htmlHoja += `
+                        <div class="cut-piece" style="left: ${pX}px; top: ${pY}px; width: ${pW}px; height: ${pH}px;">
+                            <div><strong>${b.nombre}</strong><br>${b.rotated ? b.originalH : b.originalW} x ${b.rotated ? b.originalW : b.originalH} ${unidadActual} ${rotadaText}</div>
+                        </div>
+                    `;
+                });
+
+                htmlHoja += `</div>`;
+                contenedor.innerHTML += htmlHoja;
+            });
+            
+            document.getElementById('resultadosOptimizacion').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        calcular();
+    </script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
