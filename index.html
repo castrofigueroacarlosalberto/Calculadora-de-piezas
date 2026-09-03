@@ -20,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Despiece y Optimización de Melamina</title>
     
-    <!-- Librería para descargar PDF directamente -->
+    <!-- Librería para descargar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -28,7 +28,6 @@
         .container { max-width: 1000px; background: #fff; padding: 30px; margin: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         h2, h3 { color: #0056b3; text-align: center; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; }
         
-        /* --- SELECTOR DE UNIDADES --- */
         .unit-selector-container {
             display: flex; align-items: center; justify-content: space-between;
             background-color: #f8f9fa; padding: 15px 25px; border-radius: 8px;
@@ -43,7 +42,6 @@
         .unit-btn.active { background: #fff; color: #0056b3; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         .unit-btn:hover:not(.active) { color: #495057; }
 
-        /* Secciones y Layout */
         .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
         .config-section { 
@@ -54,40 +52,30 @@
         .form-group { margin-bottom: 10px; }
         label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #495057; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; transition: border-color 0.2s; }
+        input:focus, select:focus { outline: none; border-color: #80bdff; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
         
         button.btn-primary { background-color: #0056b3; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
         button.success { background-color: #28a745; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
         button.warning { background-color: #ffc107; color: #212529; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
 
-        /* Botones de Exportación */
         .btn-export { border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; color: white; flex: 1; font-size: 14px;}
         .pdf-btn { background-color: #dc3545; }
         .excel-btn { background-color: #198754; }
         .export-container { display: flex; gap: 10px; margin-top: 10px; }
 
-        /* Visor de Pieza Dinámico */
         .piece-container { display: grid; grid-template-columns: 50px 180px 50px; grid-template-rows: 50px 180px 50px; gap: 8px; align-items: center; justify-items: center; margin: 25px auto; width: max-content; }
         .piece-center-wrapper { grid-column: 2; grid-row: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .piece-box { background-color: #e6d3c0; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.05) 10px, rgba(139, 90, 43, 0.05) 20px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; box-sizing: border-box; overflow: hidden; border-radius: 4px; }
         .texto-medida { background-color: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 13px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        /* Botones de Descuento */
-        .discount-btn { 
-            background-color: #ffffff; border: 2px solid #ced4da; border-radius: 8px; color: #495057; cursor: pointer; 
-            font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap;
-        }
+        .discount-btn { background-color: #ffffff; border: 2px solid #ced4da; border-radius: 8px; color: #495057; cursor: pointer; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
         .discount-btn.active { background-color: #ff6b6b; color: white; border-color: #fa5252; }
-        
         .btn-top { grid-column: 2; grid-row: 1; width: 100%; height: 100%; }
         .btn-bottom { grid-column: 2; grid-row: 3; width: 100%; height: 100%; }
         .btn-left { grid-column: 1; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; transform: rotate(180deg); }
         .btn-right { grid-column: 3; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; }
 
-        /* Contenedor de la Tabla */
-        .table-scroll-container {
-            flex-grow: 1; overflow-y: auto; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid #ced4da; background: white; min-height: 250px; margin-bottom: 20px;
-        }
+        .table-scroll-container { flex-grow: 1; overflow-y: auto; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #ced4da; background: white; min-height: 250px; margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 0; background: white;}
         th, td { border-bottom: 1px solid #e9ecef; padding: 12px 10px; text-align: center; font-size: 14px; vertical-align: middle;}
         th { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; color: #495057; position: sticky; top: 0; z-index: 10; }
@@ -97,35 +85,55 @@
         .btn-delete { background: #ffe3e3; color: #dc3545; border: 1px solid #ffc9c9; }
         .actions-cell { display: flex; gap: 8px; justify-content: center; align-items: center; }
 
-        /* Planos de Corte */
+        /* --- ESTILOS DE PRESUPUESTO --- */
+        .budget-box {
+            background-color: #f8f9fa; border-left: 5px solid #0056b3;
+            padding: 20px; margin-bottom: 25px; border-radius: 6px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 15px;
+        }
+        .budget-item { text-align: center; flex: 1; min-width: 150px;}
+        .budget-item span { display: block; font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;}
+        .budget-item strong { font-size: 22px; color: #212529; }
+        
+        /* Colores Específicos para Presupuesto */
+        .budget-highlight { color: #0056b3 !important; }
+        .budget-warning { color: #dc3545 !important; } /* Rojo para pedacería */
+        .budget-success { color: #28a745 !important; } /* Verde para hojas */
+        
+        .budget-divider { border-left: 1px solid #dee2e6; padding-left: 15px; }
+
         .boards-container { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; }
         .board-visual { position: relative; background-color: #fdf5e6; border: 2px solid #8b5a2b; margin: 0 auto; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
         .cut-piece { position: absolute; background-color: #e6d3c0; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.05) 10px, rgba(139, 90, 43, 0.05) 20px); border: 1px solid #8b5a2b; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #4a2f1d; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;}
         .board-title { text-align: center; font-weight: bold; margin-bottom: 5px; color: #8b5a2b; font-size: 16px;}
 
-        /* --- CLASES ESPECIALES PARA CUANDO SE GENERA EL PDF --- */
-        .exporting-pdf .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; }
+        /* --- PDF ESTILOS --- */
+        .exporting-pdf #app-container { 
+            box-shadow: none !important; padding: 0 !important; 
+            width: 850px !important; margin: 0 auto !important; max-width: none !important; 
+        }
         
         .exporting-pdf .unit-selector-container,
         .exporting-pdf .columna-izquierda,
         .exporting-pdf .btn-primary,
         .exporting-pdf .export-container,
-        .exporting-pdf th:last-child, /* Oculta cabecera de acciones */
-        .exporting-pdf td:last-child  /* Oculta botones Editar/Quitar */
+        .exporting-pdf th:last-child, 
+        .exporting-pdf td:last-child  
         { display: none !important; }
         
         .exporting-pdf .grid-layout { display: block !important; }
         .exporting-pdf .columna-derecha { width: 100% !important; }
         
         .exporting-pdf .table-scroll-container { 
-            max-height: none !important; 
-            overflow: visible !important; 
-            border: 1px solid #ccc !important; 
-            box-shadow: none !important; 
-            margin-bottom: 30px !important;
+            max-height: none !important; overflow: visible !important; 
+            border: 1px solid #ccc !important; box-shadow: none !important; margin-bottom: 30px !important;
         }
-        
-        .exporting-pdf .board-visual { page-break-inside: avoid; }
+
+        .exporting-pdf tr { page-break-inside: avoid; }
+        .exporting-pdf .boards-container { display: block !important; }
+        .exporting-pdf .board-visual { page-break-inside: avoid; margin-bottom: 40px !important; }
+        .exporting-pdf .salto-pagina-pdf { page-break-before: always; } 
     </style>
 </head>
 <body>
@@ -133,7 +141,6 @@
     <div class="container" id="app-container">
         <h2>Reporte de Despiece y Optimización</h2>
         
-        <!-- SELECTOR DE UNIDADES -->
         <div class="unit-selector-container">
             <p class="unit-selector-label">Unidad de medida preferida:</p>
             <div class="unit-toggle">
@@ -148,7 +155,8 @@
             <div class="columna-izquierda" style="display: flex; flex-direction: column; height: 100%;">
                 <div class="config-section">
                     <h3>1. Configuración Principal</h3>
-                    <div style="display: flex; gap: 10px;">
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <div class="form-group" style="flex: 1;">
                             <label id="lblHojaAlto">Hoja Alto (mm)</label>
                             <input type="number" id="hojaAlto" value="2440">
@@ -157,12 +165,20 @@
                             <label id="lblHojaAncho">Hoja Ancho (mm)</label>
                             <input type="number" id="hojaAncho" value="1220">
                         </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
                         <div class="form-group" style="flex: 1;">
                             <label id="lblGrosor">Grosor (mm)</label>
                             <select id="grosor" onchange="calcular()">
                                 <option value="15" data-mm="15">15 mm</option>
                                 <option value="18" data-mm="18">18 mm</option>
                             </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Precio por Hoja ($)</label>
+                            <!-- El oninput actualiza el presupuesto al teclear -->
+                            <input type="number" id="precioHoja" value="1350" placeholder="Ej. 1350" oninput="actualizarPresupuestoEnTiempoReal()">
                         </div>
                     </div>
                 </div>
@@ -221,10 +237,8 @@
                         </table>
                     </div>
                     
-                    <!-- Botón Generar Plano -->
-                    <button class="btn-primary" onclick="optimizarCortes()" style="margin-top: auto; font-size: 16px;">Generar Plano de Corte</button>
+                    <button class="btn-primary" onclick="optimizarCortes()" style="margin-top: auto; font-size: 16px;">Generar Plano y Presupuesto</button>
                     
-                    <!-- BOTONES DE EXPORTAR -->
                     <div class="export-container">
                         <button class="btn-export pdf-btn" onclick="exportarPDF()">📄 Descargar PDF</button>
                         <button class="btn-export excel-btn" onclick="exportarExcel()">📊 Descargar Excel</button>
@@ -233,8 +247,14 @@
             </div>
         </div>
 
-        <div id="resultadosOptimizacion" style="margin-top: 30px; display: none;">
-            <h3>4. Planos de Corte</h3>
+        <div id="resultadosOptimizacion" class="salto-pagina-pdf" style="margin-top: 30px; display: none;">
+            <h3>4. Planos de Corte y Presupuesto</h3>
+            
+            <!-- PANEL DE PRESUPUESTO (Actualizado a 4 columnas) -->
+            <div id="panelPresupuesto" class="budget-box">
+                <!-- Se llena mediante JS de forma dinámica -->
+            </div>
+
             <p id="resumenHojas" style="text-align: center; font-size: 18px; font-weight: bold; color: #28a745;"></p>
             <div id="contenedorHojas" class="boards-container"></div>
         </div>
@@ -247,8 +267,11 @@
         const factoresUnidad = { 'mm': 1, 'cm': 10, 'm': 1000 };
         const KERF_BASE_MM = 3; 
         let kerfActual = 3;     
-        
         let idPiezaEnEdicion = null; 
+        
+        // Variables globales para el presupuesto en tiempo real
+        let ultimoTotalHojasCalculado = 0;
+        let ultimaAreaUtilizadaCalculada = 0;
 
         function cambiarUnidad(nuevaUnidad) {
             if (nuevaUnidad === unidadActual) return;
@@ -288,6 +311,7 @@
             actualizarTabla();
             calcular();
             document.getElementById('resultadosOptimizacion').style.display = 'none';
+            ultimoTotalHojasCalculado = 0; // Reiniciar estado
         }
 
         function toggleDiscount(side) {
@@ -407,50 +431,98 @@
             });
         }
 
-        /* --- EXPORTAR DIRECTO A PDF CORREGIDO --- */
-        function exportarPDF() {
-            if (listaCortes.length === 0) {
-                alert("La lista está vacía. Añade piezas antes de exportar.");
-                return;
+        // --- FUNCIONES DE PRESUPUESTO EN TIEMPO REAL ---
+        function actualizarPresupuestoEnTiempoReal() {
+            if (ultimoTotalHojasCalculado > 0) {
+                renderizarPresupuesto();
             }
+        }
 
-            // 1. Añadimos la clase para ocultar menús y botones
+        function renderizarPresupuesto() {
+            const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
+            const hojaW = parseFloat(document.getElementById('hojaAncho').value) || 0;
+            const hojaH = parseFloat(document.getElementById('hojaAlto').value) || 0;
+
+            const costoTotalInversion = ultimoTotalHojasCalculado * precioHoja;
+            const areaDeUnaHoja = hojaW * hojaH;
+            const areaDeTodasLasHojas = areaDeUnaHoja * ultimoTotalHojasCalculado;
+            
+            const porcentajeAprovechamiento = areaDeTodasLasHojas > 0 ? (ultimaAreaUtilizadaCalculada / areaDeTodasLasHojas) * 100 : 0;
+            
+            // Regla de 3
+            const costoProrrateado = areaDeUnaHoja > 0 ? (ultimaAreaUtilizadaCalculada / areaDeUnaHoja) * precioHoja : 0;
+            
+            // Lo que sobró (Pedacería)
+            const costoPedaceria = costoTotalInversion - costoProrrateado;
+
+            const formatoMoneda = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
+
+            document.getElementById('panelPresupuesto').innerHTML = `
+                <div class="budget-item">
+                    <span>Inversión Total (${ultimoTotalHojasCalculado} hojas)</span>
+                    <strong class="budget-success">${formatoMoneda.format(costoTotalInversion)}</strong>
+                </div>
+                <div class="budget-item budget-divider">
+                    <span>Costo Real (Usado)</span>
+                    <strong class="budget-highlight">${formatoMoneda.format(costoProrrateado)}</strong>
+                </div>
+                <div class="budget-item budget-divider">
+                    <span>Costo Pedacería (No Usado)</span>
+                    <strong class="budget-warning">${formatoMoneda.format(costoPedaceria > 0 ? costoPedaceria : 0)}</strong>
+                </div>
+                <div class="budget-item budget-divider">
+                    <span>Aprovechamiento</span>
+                    <strong>${porcentajeAprovechamiento.toFixed(1)} %</strong>
+                </div>
+            `;
+        }
+
+        /* --- EXPORTACIÓN --- */
+        function exportarPDF() {
+            if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
             document.body.classList.add('exporting-pdf');
             
-            // 2. Usamos setTimeout para darle tiempo al navegador de ocultar los botones
-            // ANTES de que html2pdf tome la captura de la pantalla.
             setTimeout(() => {
                 const elemento = document.getElementById('app-container');
-
                 const opciones = {
-                    margin:       10,
-                    filename:     'Despiece_Melamina.pdf',
+                    margin:       [15, 10, 15, 10],
+                    filename:     'Despiece_Melamina_Presupuesto.pdf',
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 900 },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak:    { mode: ['css', 'legacy'] }
                 };
 
-                // 3. Generamos el PDF. Usamos ".then()" para asegurarnos de que la 
-                // descarga haya terminado ANTES de volver a mostrar los botones.
                 html2pdf().set(opciones).from(elemento).save().then(() => {
                     document.body.classList.remove('exporting-pdf');
                 }).catch(error => {
-                    console.error("Error generando el PDF:", error);
                     document.body.classList.remove('exporting-pdf');
                     alert("Ocurrió un error al generar el PDF.");
                 });
-                
-            }, 300); // 300 milisegundos de espera
+            }, 400); 
         }
 
-        /* --- EXPORTAR DIRECTO A EXCEL --- */
         function exportarExcel() {
-            if (listaCortes.length === 0) {
-                alert("La lista está vacía. Añade piezas antes de exportar.");
-                return;
-            }
+            if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
+
+            // Recopilar datos financieros exactos
+            const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
+            const costoTotal = ultimoTotalHojasCalculado * precioHoja;
+            
+            const hojaW = parseFloat(document.getElementById('hojaAncho').value) || 0;
+            const hojaH = parseFloat(document.getElementById('hojaAlto').value) || 0;
+            const areaDeUnaHoja = hojaW * hojaH;
+            const costoProrrateado = areaDeUnaHoja > 0 ? (ultimaAreaUtilizadaCalculada / areaDeUnaHoja) * precioHoja : 0;
+            const costoSobrante = costoTotal - costoProrrateado;
 
             let tablaHTML = `
+                <tr><th colspan="3" style="background-color: #f8f9fa; font-size:18px;">RESUMEN FINANCIERO</th></tr>
+                <tr><td colspan="2">Hojas necesarias a comprar:</td><td><b>${ultimoTotalHojasCalculado}</b></td></tr>
+                <tr><td colspan="2">Precio capturado por hoja:</td><td><b>$${precioHoja.toFixed(2)}</b></td></tr>
+                <tr><td colspan="2" style="color:#28a745;"><b>Inversión Total de Material:</b></td><td style="color:#28a745;"><b>$${costoTotal.toFixed(2)}</b></td></tr>
+                <tr><td colspan="2" style="color:#0056b3;">Costo Real (Solo madera usada en piezas):</td><td style="color:#0056b3;"><b>$${costoProrrateado.toFixed(2)}</b></td></tr>
+                <tr><td colspan="2" style="color:#dc3545;">Costo de Pedacería (Madera no utilizada):</td><td style="color:#dc3545;"><b>$${costoSobrante > 0 ? costoSobrante.toFixed(2) : '0.00'}</b></td></tr>
+                <tr><td colspan="3"></td></tr>
                 <tr>
                     <th style="background-color: #0056b3; color: white;">Nombre / Referencia</th>
                     <th style="background-color: #0056b3; color: white;">Alto Final (${unidadActual})</th>
@@ -474,12 +546,13 @@
             
             let enlace = document.createElement('a');
             enlace.href = url;
-            enlace.download = 'Lista_de_Cortes.xls';
+            enlace.download = 'Presupuesto_y_Cortes.xls';
             document.body.appendChild(enlace);
             enlace.click();
             document.body.removeChild(enlace);
         }
 
+        /* --- ALGORITMO NESTING --- */
         class Packer {
             constructor(w, h) { this.root = { x: 0, y: 0, w: w, h: h }; }
             fit(blocks) {
@@ -538,17 +611,27 @@
                 bloquesPendientes = bloquesSobrantes;
             }
 
+            // Guardar valores globales para renderizado en tiempo real
+            ultimoTotalHojasCalculado = hojasUtilizadas.length;
+            
+            ultimaAreaUtilizadaCalculada = 0;
+            listaCortes.forEach(p => { ultimaAreaUtilizadaCalculada += (p.altoFinal * p.anchoFinal); });
+
+            renderizarPresupuesto();
             dibujarHojas(hojasUtilizadas, hojaW, hojaH);
         }
 
         function dibujarHojas(hojas, hojaW, hojaH) {
             document.getElementById('resultadosOptimizacion').style.display = 'block';
-            document.getElementById('resumenHojas').innerText = `Total de hojas necesarias: ${hojas.length}`;
+            document.getElementById('resumenHojas').innerText = `Planos Generados: ${hojas.length}`;
             
             const contenedor = document.getElementById('contenedorHojas');
             contenedor.innerHTML = '';
 
-            const escala = 800 / hojaH;
+            const escalaW = 750 / hojaW;
+            const escalaH = 900 / hojaH;
+            const escala = Math.min(escalaW, escalaH);
+            
             const visualW = hojaW * escala;
             const visualH = hojaH * escala;
 
