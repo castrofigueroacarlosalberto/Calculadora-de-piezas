@@ -1,24 +1,12 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Despiece y Optimización de Melamina</title>
+    
+    <!-- FAVICON INTEGRADO (H Dorada con fondo marrón) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23412929'/%3E%3Ctext x='50%25' y='53%25' dominant-baseline='middle' text-anchor='middle' font-family='Helvetica, Arial, sans-serif' font-size='50' fill='%23deb876'%3EH%3C/text%3E%3C/svg%3E">
 
     <!-- Librería para descargar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -238,7 +226,7 @@
             border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 400; color: #fff; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
         }
         
-        /* --- NUEVO: ESTILOS EXCLUSIVOS PARA EL PDF BLANCO Y NEGRO --- */
+        /* --- ESTILOS EXCLUSIVOS PARA EL PDF BLANCO Y NEGRO --- */
         body.exporting-pdf {
             background: #ffffff !important;
             background-image: none !important;
@@ -401,7 +389,8 @@
 
                 <button id="btnAgregarPieza" class="success" onclick="agregarPieza()">Ingresar a la lista</button>
             </div>
-        </div>
+            
+        </div> <!-- Fin Top Row -->
 
         <!-- BOTTOM ROW: Módulo Cola de Trabajo -->
         <div class="config-section" style="margin-top: 10px;">
@@ -462,7 +451,7 @@
 
     <script>
         let listaCortes = [];
-        let hojasUtilizadasGlobal = []; /* Guardamos los tableros globales para el PDF */
+        let hojasUtilizadasGlobal = []; 
         
         let descuentos = { top: false, bottom: false, left: false, right: false };
         let unidadActual = 'mm';
@@ -744,13 +733,11 @@
             `;
         }
 
-        /* --- NUEVO: FUNCIÓN EXCLUSIVA PARA GENERAR LOS PLANOS EN EL PDF --- */
         function generarHTMLTablerosPDF() {
             const hojaW = parseFloat(document.getElementById('hojaAncho').value);
             const hojaH = parseFloat(document.getElementById('hojaAlto').value);
             let html = '';
             
-            // Limitamos el ancho para que quepa perfecto en la hoja del PDF
             const escalaW = 710 / hojaW; 
             const escalaH = 900 / hojaH;
             const escala = Math.min(escalaW, escalaH);
@@ -761,7 +748,7 @@
 
             hojasUtilizadasGlobal.forEach((hoja, index) => {
                 html += `
-                    <div style="page-break-inside: avoid; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 30px; background: #fff;">
+                    <div class="board-card" style="page-break-inside: avoid; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 30px; background: #fff;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                             <div>
                                 <div style="font-size: 18px; font-weight: bold;">Tablero 0${index + 1}</div>
@@ -801,7 +788,6 @@
             if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
             if (hojasUtilizadasGlobal.length === 0) { alert("Primero debes generar el despiece."); return; }
 
-            // Recalcular datos para inyectarlos en la plantilla de PDF
             const fm = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
             
             const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
@@ -833,10 +819,15 @@
             const precioVentaSugerido = cobroMelamina + cobroHerrajes;
             const pMargenHerraje = Math.round((margenHerrajes - 1) * 100);
 
-            // Inyectamos todo en el contenedor oculto exclusivo para imprimir
             const printDiv = document.getElementById('print-template');
             printDiv.innerHTML = `
-                <h1 style="text-align:left; letter-spacing: 12px; font-weight:400; font-size: 24px; margin-bottom: 30px; text-transform: uppercase;">HÁBITAT</h1>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40"><circle cx="50" cy="50" r="50" fill="#000"/><text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="50" fill="#fff">H</text></svg>
+                        <h1 style="letter-spacing: 8px; font-weight:400; font-size: 24px; margin: 0; text-transform: uppercase;">HÁBITAT</h1>
+                    </div>
+                    <span style="font-size: 12px; color: #555;">Plataforma de Optimización</span>
+                </div>
 
                 <h3 style="border-left: 3px solid #000; padding-left: 10px; font-size: 14px; text-transform: uppercase; margin-bottom: 10px;">Lista de Piezas</h3>
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 12px; text-align: center;">
@@ -886,23 +877,22 @@
                 </div>
             `;
 
-            // Ocultar app y mostrar contenedor de impresión temporalmente
             document.body.classList.add('exporting-pdf');
 
             setTimeout(() => {
                 const elemento = document.getElementById('print-template');
                 const opciones = {
-                    margin:       [15, 15, 15, 15], // Márgenes perimetrales seguros
+                    margin:       [15, 15, 15, 15], 
                     filename:     'Reporte_Despiece.pdf',
                     image:        { type: 'jpeg', quality: 0.98 },
                     html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 800 },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak:    { mode: 'css', avoid: '.board-card' }
+                    pagebreak:    { mode: ['css', 'legacy'] }
                 };
                 
                 html2pdf().set(opciones).from(elemento).save().then(() => {
-                    document.body.classList.remove('exporting-pdf'); // Restaurar app
-                    printDiv.innerHTML = ''; // Limpiar div temporal
+                    document.body.classList.remove('exporting-pdf'); 
+                    printDiv.innerHTML = ''; 
                 }).catch(error => {
                     document.body.classList.remove('exporting-pdf');
                     printDiv.innerHTML = '';
@@ -1030,7 +1020,7 @@
                 bloquesPendientes = bloquesSobrantes;
             }
             ultimoTotalHojasCalculado = hojasUtilizadas.length;
-            hojasUtilizadasGlobal = hojasUtilizadas; /* Guardamos globalmente para el PDF */
+            hojasUtilizadasGlobal = hojasUtilizadas; 
 
             ultimaAreaUtilizadaCalculada = 0;
             listaCortes.forEach(p => { ultimaAreaUtilizadaCalculada += (p.altoFinal * p.anchoFinal); });
@@ -1105,10 +1095,3 @@
     </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
