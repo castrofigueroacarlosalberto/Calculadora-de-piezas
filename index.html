@@ -19,10 +19,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Despiece y Optimización de Melamina</title>
-    
+
     <!-- Librería para descargar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <style>
         /* --- PALETA DE COLORES Y TEMA DARK MODERN --- */
         :root {
@@ -34,68 +33,64 @@
             --neon-hover: #b0e000;
             --accent-white: #ffffff;
             --accent-red: #ff3333;
-            --accent-yellow: #ffd700; 
+            --accent-yellow: #ffd700;
+            --accent-soft-red: #ff5e5e; /* Rojo estético para pedacería y desperdicio */
+            --accent-blue: #3399ff; /* Azul estético y funcional para ganancia */
         }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-        body { 
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
-            
             /* --- DEGRADADO PROFUNDO BASADO EN #402626 --- */
-            background-color: #0a0606; 
-            background-image: 
+            background-color: #0a0606;
+            background-image:
                 radial-gradient(circle at 15% 0%, #2d1a1a 0%, transparent 40%),  
-                radial-gradient(circle at 95% 50%, #402626 0%, transparent 40%), 
-                radial-gradient(circle at 85% 100%, #120909 0%, transparent 40%), 
-                linear-gradient(135deg, #0a0606 0%, #000000 100%); 
+                radial-gradient(circle at 95% 50%, #402626 0%, transparent 40%),
+                radial-gradient(circle at 85% 100%, #120909 0%, transparent 40%),
+                linear-gradient(135deg, #0a0606 0%, #000000 100%);
             background-attachment: fixed;
-            
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 30px 20px; 
+
+            color: var(--text-main);
+            margin: 0;
+            padding: 30px 20px;
             font-weight: 300;
         }
-
-        .container { 
-            max-width: 1100px; 
-            margin: auto; 
+        .container {
+            max-width: 1100px;
+            margin: auto;
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
-
         /* --- ENCABEZADO Y LOGO --- */
         .app-top-header {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border-color); padding-bottom: 20px;
         }
-        
+
         .header-left {
             display: flex; align-items: center; gap: 25px;
         }
-        
+
         .logo-habitat {
             font-family: "Helvetica Neue", Helvetica, sans-serif;
             font-weight: 400; font-size: 28px; letter-spacing: 14px;
-            margin-right: -14px; /* Compensa el tracking visualmente */
+            margin-right: -14px;
             background: linear-gradient(90deg, #d2a65a 0%, #ebd498 50%, #d2a65a 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
-
         .header-title {
             font-size: 14px; font-weight: 300; color: var(--text-muted);
             text-transform: uppercase; letter-spacing: 2px; margin: 0;
             border-left: 1px solid var(--border-color); padding-left: 25px;
         }
-
         @media(max-width: 850px) {
             .app-top-header { flex-direction: column; gap: 20px; align-items: center; }
             .header-left { flex-direction: column; gap: 12px; align-items: center; }
             .header-title { border-left: none; border-top: 1px solid var(--border-color); padding-left: 0; padding-top: 12px; text-align: center; }
             .logo-habitat { margin-right: 0; padding-left: 14px; }
         }
-
         /* --- HEADERS DE MÓDULO CON DEGRADADO BLANCO --- */
         .styled-header {
             font-size: 22px; font-weight: 300; margin: 0 0 20px 0; padding: 8px 15px;
@@ -104,31 +99,28 @@
             display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: all 0.3s ease;
         }
         .styled-header span { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-
-        /* --- SELECTOR DE UNIDADES (RESTABLECIDO) --- */
+        /* --- SELECTOR DE UNIDADES --- */
         .unit-selector-container { display: flex; align-items: center; justify-content: space-between; background: transparent; padding: 0; z-index: 2; }
         .unit-toggle { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px; }
         .unit-btn {
             background: transparent; border: 1px solid transparent; padding: 6px 16px; border-radius: 16px;
             font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease;
         }
-        .unit-btn.active { 
-            background: rgba(255, 255, 255, 0.15); color: #fff; font-weight: 600; 
+        .unit-btn.active {
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-weight: 600;
             border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .unit-btn:hover:not(.active) { color: var(--text-main); }
-
-        /* --- LAYOUT Y PANELES BLURRED GLASS --- */
+        /* --- LAYOUT Y PANELES --- */
         .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media(max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
-        
-        .config-section { 
-            padding: 24px; background: rgba(20, 15, 15, 0.45); border: 1px solid var(--border-color); 
+
+        .config-section {
+            padding: 24px; background: rgba(20, 15, 15, 0.45); border: 1px solid var(--border-color);
             border-radius: 16px; margin-bottom: 20px; display: flex; flex-direction: column;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
         }
-
         /* --- CLASE MODO EDICIÓN --- */
         .edit-mode-active {
             border-color: var(--accent-yellow) !important;
@@ -138,47 +130,40 @@
             border-left-color: var(--accent-yellow) !important;
             background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, transparent 100%) !important;
         }
-
         /* --- INPUTS --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        input, select { 
-            width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); 
+        input, select {
+            width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color);
             border-radius: 8px; box-sizing: border-box; transition: border-color 0.2s; font-size: 14px; color: var(--text-main);
         }
         input:focus, select:focus { outline: none; border-color: var(--accent-white); }
-        
+
         .herrajes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; margin-bottom: 15px; }
         .herrajes-box span.box-title { display: block; font-size: 11px; color: var(--accent-white); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-
         /* --- BOTONES PRINCIPALES --- */
-        .btn-primary, .success, .warning, .btn-export { 
-            background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-color); 
-            padding: 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; 
+        .btn-primary, .success, .warning, .btn-export {
+            background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-color);
+            padding: 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500;
             transition: all 0.2s; box-sizing: border-box;
         }
         .btn-primary, .success, .warning { width: 100%; }
         .btn-export { flex: 1; }
         .btn-primary:hover, .success:hover, .btn-export:hover { background: rgba(255,255,255,0.1); border-color: var(--text-main); }
-
         .warning { background: rgba(255,255,255,0.9); color: #000; border-color: #fff; font-weight: 600; }
         .warning:hover { background: #fff; transform: translateY(-2px); }
-
         .export-container { display: flex; gap: 10px; margin-top: 15px; }
-
         /* --- VISUALIZADOR DE PIEZA --- */
         .piece-container { display: grid; grid-template-columns: 50px 160px 50px; grid-template-rows: 50px 160px 50px; gap: 8px; align-items: center; justify-items: center; margin: 25px auto; width: max-content; }
         .piece-center-wrapper { grid-column: 2; grid-row: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .piece-box { background-color: rgba(255,255,255,0.03); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 300; box-sizing: border-box; overflow: hidden; border-radius: 4px; transition: all 0.2s ease;}
         .texto-medida { color: var(--text-main); font-size: 14px; letter-spacing: 1px; }
-
         .discount-btn { background-color: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-muted); cursor: pointer; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center; white-space: nowrap; transition: all 0.2s;}
         .discount-btn.active { background-color: var(--accent-white); color: #000; border-color: var(--accent-white); font-weight: 600;}
         .btn-top { grid-column: 2; grid-row: 1; width: 100%; height: 100%; }
         .btn-bottom { grid-column: 2; grid-row: 3; width: 100%; height: 100%; }
         .btn-left { grid-column: 1; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; transform: rotate(180deg); }
         .btn-right { grid-column: 3; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; }
-
         /* --- TABLA --- */
         .table-scroll-container { flex-grow: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; background: rgba(0,0,0,0.3); min-height: 250px; margin-bottom: 20px; }
         .table-scroll-container::-webkit-scrollbar { width: 6px; }
@@ -187,39 +172,34 @@
         th, td { border-bottom: 1px solid var(--border-color); padding: 12px 10px; text-align: center; font-size: 13px; font-weight: 300;}
         th { background-color: rgba(0,0,0,0.6); color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.2);}
         tr:last-child td { border-bottom: none; }
-        
+
         .btn-action { margin: 0; padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 500; background: transparent; color: var(--text-main); transition: 0.2s;}
         .btn-edit:hover { border-color: var(--accent-white); color: var(--accent-white); }
         .btn-delete:hover { border-color: var(--accent-red); color: var(--accent-red); }
         .actions-cell { display: flex; gap: 8px; justify-content: center; align-items: center; }
-
         /* --- PRESUPUESTO ESTILO DASHBOARD --- */
         .budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         @media(max-width: 600px) { .budget-grid { grid-template-columns: 1fr; } }
-
-        .budget-card { 
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); 
+        .budget-card {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border-color);
             border-radius: 12px; padding: 24px; position: relative; display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .budget-card::before { content: ''; position: absolute; top: 0; left: 24px; width: 40px; height: 1px; background: var(--text-muted); }
-        .budget-card.highlight::before { background: var(--accent-white); width: 60px; height: 2px;}
-        .budget-card.highlight-neon::before { background: var(--neon-green); width: 60px; height: 2px;}
         
         .budget-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;}
         .budget-value { font-size: 32px; font-weight: 300; color: var(--text-main); letter-spacing: -1px; }
         .budget-value.neon { color: var(--neon-green); font-size: 42px; font-weight: 400;}
         .budget-value.white { color: var(--accent-white); }
-
+        .budget-value.red { color: var(--accent-soft-red); font-weight: 400; }
+        .budget-value.blue { color: var(--accent-blue); font-weight: 400; }
         /* --- PLANOS DE CORTE --- */
         .boards-container { margin-top: 20px; display: flex; flex-direction: column; gap: 40px; }
         .board-visual { position: relative; background-color: transparent; border: 1px solid #ffffff; margin: 0 auto; border-radius: 2px; }
-        .cut-piece { 
-            position: absolute; 
+        .cut-piece {
+            position: absolute;
             background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.25) 4px, rgba(255, 255, 255, 0.25) 5px);
             border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 400; color: #fff; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
         }
         .board-title { text-align: left; font-weight: 300; margin-bottom: 10px; color: var(--text-main); font-size: 18px; letter-spacing: -0.5px;}
-
         /* --- PDF ESTILOS --- */
         .exporting-pdf #app-container { background: #0a0606 !important; padding: 0 !important; width: 850px !important; margin: 0 auto !important; max-width: none !important; }
         .exporting-pdf .app-top-header { border-bottom: none !important; margin-bottom: 0 !important; }
@@ -230,20 +210,18 @@
         .exporting-pdf tr { page-break-inside: avoid; }
         .exporting-pdf .boards-container { display: block !important; }
         .exporting-pdf .board-visual { page-break-inside: avoid; margin-bottom: 40px !important; }
-        .exporting-pdf .salto-pagina-pdf { page-break-before: always; } 
+        .exporting-pdf .salto-pagina-pdf { page-break-before: always; }
     </style>
 </head>
 <body>
-
     <div class="container" id="app-container">
-        
+
         <!-- ENCABEZADO CON LOGO Y TÍTULO ELEGANTE -->
         <div class="app-top-header">
             <div class="header-left">
                 <div class="logo-habitat">HÁBITAT</div>
                 <h2 class="header-title">Plataforma de Optimización</h2>
             </div>
-
             <div class="unit-selector-container" style="z-index: 2;">
                 <div class="unit-toggle">
                     <button class="unit-btn active" id="btn-mm" onclick="cambiarUnidad('mm')">MM</button>
@@ -252,14 +230,13 @@
                 </div>
             </div>
         </div>
-
         <div class="grid-layout" style="margin-top: 20px;">
             <!-- Columna Izquierda -->
             <div class="columna-izquierda" style="display: flex; flex-direction: column; height: 100%;">
-                
+
                 <div class="config-section">
                     <h3 class="styled-header">01 <span>Parámetros Base</span></h3>
-                    
+
                     <div style="display: flex; gap: 15px; margin-bottom: 5px;">
                         <div class="form-group" style="flex: 1;">
                             <label id="lblHojaAlto">Hoja Alto (mm)</label>
@@ -270,7 +247,7 @@
                             <input type="number" id="hojaAncho" value="1220">
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; gap: 15px; margin-bottom: 5px;">
                         <div class="form-group" style="flex: 1;">
                             <label id="lblGrosor">Grosor Material</label>
@@ -284,7 +261,6 @@
                             <input type="number" id="precioHoja" value="1350" oninput="actualizarPresupuestoEnTiempoReal()">
                         </div>
                     </div>
-
                     <div style="display: flex; gap: 15px; margin-bottom: 10px;">
                         <div class="form-group" style="flex: 1;">
                             <label>Multiplicador (Ganancia)</label>
@@ -304,7 +280,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="herrajes-box">
                         <span class="box-title">Módulo de Herrajes</span>
                         <div style="display: flex; gap: 15px; margin-bottom: 5px;">
@@ -317,7 +292,7 @@
                                 <input type="number" id="precioBisagra" value="35" min="0" oninput="actualizarPresupuestoEnTiempoReal()">
                             </div>
                         </div>
-                        
+
                         <div style="display: flex; gap: 15px;">
                             <div class="form-group" style="flex: 1; margin-bottom: 0;">
                                 <label>Otros Gastos ($)</label>
@@ -335,10 +310,8 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="modulo-anadir-piezas" class="config-section" style="flex-grow: 1; margin-bottom: 0;">
                     <h3 class="styled-header">02 <span>Añadir Piezas</span></h3>
-
                     <div style="display: flex; gap: 15px;">
                         <div class="form-group" style="flex: 1;">
                             <label id="lblPiezaAlto">Alto</label>
@@ -349,7 +322,6 @@
                             <input type="number" id="piezaAncho" value="500" oninput="calcular()">
                         </div>
                     </div>
-
                     <div class="piece-container">
                         <button id="btnTop" class="discount-btn btn-top" onclick="toggleDiscount('top')">- 15 mm</button>
                         <button id="btnLeft" class="discount-btn btn-left" onclick="toggleDiscount('left')">- 15 mm</button>
@@ -361,22 +333,20 @@
                         <button id="btnRight" class="discount-btn btn-right" onclick="toggleDiscount('right')">- 15 mm</button>
                         <button id="btnBottom" class="discount-btn btn-bottom" onclick="toggleDiscount('bottom')">- 15 mm</button>
                     </div>
-
                     <div class="form-group">
                         <label>Identificador</label>
                         <input type="text" id="nombrePieza" placeholder="Ej. Puerta Alacena" value="Pieza 1">
                     </div>
-                    
+
                     <button id="btnAgregarPieza" class="success" onclick="agregarPieza()" style="margin-top: auto;">Ingresar a la lista</button>
                 </div>
             </div>
-
             <!-- Columna Derecha -->
             <div class="columna-derecha" style="display: flex; flex-direction: column; height: 100%;">
                 <div class="config-section" style="flex-grow: 1; margin-bottom: 0;">
-                    
+
                     <h3 class="styled-header">03 <span>Cola de Trabajo</span></h3>
-                    
+
                     <div class="table-scroll-container" style="margin-bottom: 20px;">
                         <table id="tablaCortes">
                             <thead>
@@ -391,9 +361,9 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <button class="btn-primary" onclick="optimizarCortes()" style="margin-top: auto;">Ejecutar Análisis Total</button>
-                    
+
                     <div class="export-container">
                         <button class="btn-export pdf-btn" onclick="exportarPDF()">Exportar PDF</button>
                         <button class="btn-export excel-btn" onclick="exportarExcel()">Exportar Excel</button>
@@ -401,42 +371,41 @@
                 </div>
             </div>
         </div>
-
         <div id="resultadosOptimizacion" class="salto-pagina-pdf" style="margin-top: 50px; display: none;">
-            
+
             <h3 class="styled-header">04 <span>Dashboard Financiero</span></h3>
-            
+
             <div id="panelPresupuesto">
                 <!-- Se llena mediante JS -->
             </div>
-
+            
+            <!-- CONTENEDOR AÑADIDO PARA EVITAR EL ERROR JS Y DIBUJAR LOS PLANOS -->
+            <div id="resumenHojas" style="margin-top: 40px; margin-bottom: 20px;"></div>
+            
             <div id="contenedorHojas" class="boards-container"></div>
         </div>
     </div>
-
     <script>
         let listaCortes = [];
         let descuentos = { top: false, bottom: false, left: false, right: false };
         let unidadActual = 'mm';
         const factoresUnidad = { 'mm': 1, 'cm': 10, 'm': 1000 };
-        const KERF_BASE_MM = 3; 
+        const KERF_BASE_MM = 3;
         let kerfActual = 3;     
-        let idPiezaEnEdicion = null; 
-        
+        let idPiezaEnEdicion = null;
+
         let ultimoTotalHojasCalculado = 0;
         let ultimaAreaUtilizadaCalculada = 0;
-
+        
         function cambiarUnidad(nuevaUnidad) {
             if (nuevaUnidad === unidadActual) return;
             document.querySelectorAll('.unit-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('btn-' + nuevaUnidad).classList.add('active');
-
             const factorConversion = factoresUnidad[unidadActual] / factoresUnidad[nuevaUnidad];
             ['hojaAlto', 'hojaAncho', 'piezaAlto', 'piezaAncho'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el.value) { el.value = Number((parseFloat(el.value) * factorConversion).toFixed(4)); }
             });
-
             const grosorSelect = document.getElementById('grosor');
             Array.from(grosorSelect.options).forEach(opt => {
                 const mmBase = parseFloat(opt.getAttribute('data-mm'));
@@ -444,78 +413,66 @@
                 opt.value = valorConvertido;
                 opt.text = `${Number(valorConvertido.toFixed(4))} ${nuevaUnidad.toUpperCase()}`;
             });
-
             kerfActual = KERF_BASE_MM / factoresUnidad[nuevaUnidad];
-
             listaCortes.forEach(p => {
                 p.altoFinal = Number((p.altoFinal * factorConversion).toFixed(4));
                 p.anchoFinal = Number((p.anchoFinal * factorConversion).toFixed(4));
                 p.altoOriginal = Number((p.altoOriginal * factorConversion).toFixed(4));
                 p.anchoOriginal = Number((p.anchoOriginal * factorConversion).toFixed(4));
             });
-
             document.getElementById('lblHojaAlto').innerText = `Hoja Alto (${nuevaUnidad})`;
             document.getElementById('lblHojaAncho').innerText = `Hoja Ancho (${nuevaUnidad})`;
             document.getElementById('lblGrosor').innerText = `Grosor (${nuevaUnidad})`;
             document.getElementById('lblPiezaAlto').innerText = `Alto (${nuevaUnidad})`;
             document.getElementById('lblPiezaAncho').innerText = `Ancho (${nuevaUnidad})`;
-
             unidadActual = nuevaUnidad;
             actualizarTabla();
             calcular();
             document.getElementById('resultadosOptimizacion').style.display = 'none';
             ultimoTotalHojasCalculado = 0;
         }
-
+        
         function toggleDiscount(side) {
             descuentos[side] = !descuentos[side];
             calcular();
         }
-
+        
         function calcular() {
             const grosor = parseFloat(document.getElementById('grosor').value);
-            
+
             const textoDescuento = `- ${Number(grosor.toFixed(4))} ${unidadActual}`;
             ['btnTop', 'btnBottom', 'btnLeft', 'btnRight'].forEach(id => document.getElementById(id).innerText = textoDescuento);
-
             ['top', 'bottom', 'left', 'right'].forEach(side => {
                 const btn = document.getElementById('btn' + side.charAt(0).toUpperCase() + side.slice(1));
                 descuentos[side] ? btn.classList.add('active') : btn.classList.remove('active');
             });
-
             const alto = parseFloat(document.getElementById('piezaAlto').value) || 0;
             const ancho = parseFloat(document.getElementById('piezaAncho').value) || 0;
-
             let altoF = Number((alto - (descuentos.top ? grosor : 0) - (descuentos.bottom ? grosor : 0)).toFixed(4));
             let anchoF = Number((ancho - (descuentos.left ? grosor : 0) - (descuentos.right ? grosor : 0)).toFixed(4));
-
             document.getElementById('textoMedida').innerHTML = `${altoF}<br><span style="font-size:10px; color:#888;">x</span><br>${anchoF}`;
-
             const visor = document.getElementById('visualizadorPieza');
             visor.style.borderTop = descuentos.top ? '4px solid var(--accent-white)' : '1px solid rgba(255,255,255,0.1)';
             visor.style.borderBottom = descuentos.bottom ? '4px solid var(--accent-white)' : '1px solid rgba(255,255,255,0.1)';
             visor.style.borderLeft = descuentos.left ? '4px solid var(--accent-white)' : '1px solid rgba(255,255,255,0.1)';
             visor.style.borderRight = descuentos.right ? '4px solid var(--accent-white)' : '1px solid rgba(255,255,255,0.1)';
-
             let pWidth = 160, pHeight = 160;
             if (alto > 0 && ancho > 0) {
-                if (alto > ancho) { pWidth = (ancho / alto) * 160; } 
+                if (alto > ancho) { pWidth = (ancho / alto) * 160; }
                 else { pHeight = (alto / ancho) * 160; }
             }
             visor.style.width = Math.max(pWidth, 40) + 'px';
             visor.style.height = Math.max(pHeight, 40) + 'px';
-
             return { altoF, anchoF };
         }
-
+        
         function agregarPieza() {
             const medidas = calcular();
             const nombre = document.getElementById('nombrePieza').value || 'Pieza';
             const altoInput = parseFloat(document.getElementById('piezaAlto').value) || 0;
             const anchoInput = parseFloat(document.getElementById('piezaAncho').value) || 0;
-            
-            if(medidas.altoF <= 0 || medidas.anchoF <= 0) { alert("Las medidas no pueden ser 0 o negativas."); return; }
 
+            if(medidas.altoF <= 0 || medidas.anchoF <= 0) { alert("Las medidas no pueden ser 0 o negativas."); return; }
             if (idPiezaEnEdicion !== null) {
                 const index = listaCortes.findIndex(p => p.id === idPiezaEnEdicion);
                 if (index !== -1) {
@@ -524,23 +481,22 @@
                 idPiezaEnEdicion = null;
                 document.getElementById('btnAgregarPieza').innerText = "Ingresar a la lista";
                 document.getElementById('btnAgregarPieza').className = "success";
-                
+
                 // QUITAR GLOW AMARILLO Y MODO EDICIÓN
                 document.getElementById('modulo-anadir-piezas').classList.remove('edit-mode-active');
             } else {
                 listaCortes.push({ id: Date.now(), nombre: nombre, altoFinal: medidas.altoF, anchoFinal: medidas.anchoF, altoOriginal: altoInput, anchoOriginal: anchoInput, descuentosAplicados: { ...descuentos } });
             }
-
             document.getElementById('nombrePieza').value = '';
             document.getElementById('nombrePieza').focus();
             actualizarTabla();
-            
+
             if (idPiezaEnEdicion === null) {
                 const contenedorTabla = document.querySelector('.table-scroll-container');
                 contenedorTabla.scrollTop = contenedorTabla.scrollHeight;
             }
         }
-
+        
         function editarPieza(id) {
             const pieza = listaCortes.find(p => p.id === id);
             if (!pieza) return;
@@ -549,33 +505,31 @@
             document.getElementById('piezaAncho').value = pieza.anchoOriginal;
             document.getElementById('nombrePieza').value = pieza.nombre;
             descuentos = { ...pieza.descuentosAplicados };
-
             const btnAgregar = document.getElementById('btnAgregarPieza');
             btnAgregar.innerText = "Guardar Cambios";
-            btnAgregar.className = "warning"; 
-            
+            btnAgregar.className = "warning";
+
             calcular();
             actualizarTabla();
-
             // APLICAR GLOW AMARILLO Y HACER SCROLL SUAVE AL FORMULARIO
             const moduloEditar = document.getElementById('modulo-anadir-piezas');
             moduloEditar.classList.add('edit-mode-active');
             moduloEditar.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
+        
         function eliminarPieza(id) {
             listaCortes = listaCortes.filter(p => p.id !== id);
             if (idPiezaEnEdicion === id) {
                 idPiezaEnEdicion = null;
                 document.getElementById('btnAgregarPieza').innerText = "Ingresar a la lista";
                 document.getElementById('btnAgregarPieza').className = "success";
-                
+
                 // QUITAR GLOW AMARILLO AL ELIMINAR LA QUE SE EDITABA
                 document.getElementById('modulo-anadir-piezas').classList.remove('edit-mode-active');
             }
             actualizarTabla();
         }
-
+        
         function actualizarTabla() {
             const tbody = document.querySelector('#tablaCortes tbody');
             tbody.innerHTML = '';
@@ -595,51 +549,50 @@
                 `;
             });
         }
-
+        
         function actualizarPresupuestoEnTiempoReal() {
             if (ultimoTotalHojasCalculado > 0) {
                 renderizarPresupuesto();
             }
         }
-
+        
         function renderizarPresupuesto() {
             const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
             const hojaW = parseFloat(document.getElementById('hojaAncho').value) || 0;
             const hojaH = parseFloat(document.getElementById('hojaAlto').value) || 0;
-            
+
             const multiplicadorMO = parseFloat(document.getElementById('multiplicadorManoObra').value) || 1;
             const baseManoObra = document.getElementById('baseManoObra').value;
-            
+
             const cantBisagras = parseInt(document.getElementById('cantBisagras').value) || 0;
             const precioBisagra = parseFloat(document.getElementById('precioBisagra').value) || 0;
             const costoOtrosHerrajes = parseFloat(document.getElementById('costoOtrosHerrajes').value) || 0;
-            
+
             const costoHerrajes = (cantBisagras * precioBisagra) + costoOtrosHerrajes;
             const margenHerrajes = parseFloat(document.getElementById('margenHerrajes').value) || 1;
-
             const costoTotalInversion = ultimoTotalHojasCalculado * precioHoja;
             const inversionTotalTaller = costoTotalInversion + costoHerrajes;
-
             const areaDeUnaHoja = hojaW * hojaH;
             const areaDeTodasLasHojas = areaDeUnaHoja * ultimoTotalHojasCalculado;
+            
             const porcentajeAprovechamiento = areaDeTodasLasHojas > 0 ? (ultimaAreaUtilizadaCalculada / areaDeTodasLasHojas) * 100 : 0;
+            const porcentajeDesperdicio = areaDeTodasLasHojas > 0 ? 100 - porcentajeAprovechamiento : 0;
+            
             const costoProrrateado = areaDeUnaHoja > 0 ? (ultimaAreaUtilizadaCalculada / areaDeUnaHoja) * precioHoja : 0;
             const costoPedaceria = costoTotalInversion - costoProrrateado;
-
             const baseDeCobroMelamina = (baseManoObra === 'inversion') ? costoTotalInversion : costoProrrateado;
-            
+
             const cobroMelamina = baseDeCobroMelamina * multiplicadorMO;
             const cobroHerrajes = costoHerrajes * margenHerrajes;
-            
+
             const gananciaMelamina = cobroMelamina - baseDeCobroMelamina;
             const gananciaHerrajes = cobroHerrajes - costoHerrajes;
             const gananciaLibreTotal = gananciaMelamina + gananciaHerrajes;
-            
-            const precioVentaSugerido = cobroMelamina + cobroHerrajes;
 
+            const precioVentaSugerido = cobroMelamina + cobroHerrajes;
             const formatoMoneda = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
             const pMargenHerraje = Math.round((margenHerrajes - 1) * 100);
-
+            
             document.getElementById('panelPresupuesto').innerHTML = `
                 <div style="margin-bottom: 30px;">
                     <div class="budget-grid">
@@ -651,17 +604,25 @@
                             <span class="budget-label">Inversión Herrajes</span>
                             <div class="budget-value">${formatoMoneda.format(costoHerrajes)}</div>
                         </div>
-                        <div class="budget-card">
-                            <span class="budget-label">Costo Pedacería</span>
-                            <div class="budget-value white">${formatoMoneda.format(costoPedaceria > 0 ? costoPedaceria : 0)}</div>
-                        </div>
                         <div class="budget-card highlight">
                             <span class="budget-label">Inversión Total Taller</span>
                             <div class="budget-value white">${formatoMoneda.format(inversionTotalTaller)}</div>
                         </div>
+                        <div class="budget-card">
+                            <span class="budget-label">Costo Pedacería</span>
+                            <div class="budget-value red">${formatoMoneda.format(costoPedaceria > 0 ? costoPedaceria : 0)}</div>
+                        </div>
+                        <div class="budget-card">
+                            <span class="budget-label">% de Uso de material</span>
+                            <div class="budget-value white">${porcentajeAprovechamiento.toFixed(1)}%</div>
+                        </div>
+                        <div class="budget-card">
+                            <span class="budget-label">% de Desperdicio</span>
+                            <div class="budget-value red">${porcentajeDesperdicio.toFixed(1)}%</div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div>
                     <h3 style="margin-bottom: 20px; font-size: 20px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Retorno & Cliente</h3>
                     <div class="budget-grid">
@@ -675,7 +636,7 @@
                         </div>
                         <div class="budget-card">
                             <span class="budget-label">Ganancia Libre</span>
-                            <div class="budget-value" style="color: #fff;">${formatoMoneda.format(gananciaLibreTotal)}</div>
+                            <div class="budget-value blue">${formatoMoneda.format(gananciaLibreTotal)}</div>
                         </div>
                         <div class="budget-card highlight-neon" style="border-color: var(--neon-green);">
                             <span class="budget-label" style="color: var(--neon-green);">Precio Sugerido al Cliente</span>
@@ -685,11 +646,11 @@
                 </div>
             `;
         }
-
+        
         function exportarPDF() {
             if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
             document.body.classList.add('exporting-pdf');
-            
+
             setTimeout(() => {
                 const elemento = document.getElementById('app-container');
                 const opciones = {
@@ -700,19 +661,17 @@
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
                     pagebreak:    { mode: ['css', 'legacy'] }
                 };
-
                 html2pdf().set(opciones).from(elemento).save().then(() => {
                     document.body.classList.remove('exporting-pdf');
                 }).catch(error => {
                     document.body.classList.remove('exporting-pdf');
                     alert("Ocurrió un error al generar el PDF.");
                 });
-            }, 400); 
+            }, 400);
         }
-
+        
         function exportarExcel() {
             if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
-
             const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
             const costoTotalMelamina = ultimoTotalHojasCalculado * precioHoja;
             const cantBisagras = parseInt(document.getElementById('cantBisagras').value) || 0;
@@ -733,42 +692,38 @@
             const gananciaLibreTotal = (cobroMelamina - baseDeCobroMelamina) + (cobroHerrajes - costoHerrajes);
             const precioSugerido = cobroMelamina + cobroHerrajes;
             const pMargenHerraje = Math.round((margenHerrajes - 1) * 100);
-
             let tablaHTML = `
                 <tr><th colspan="3" style="background-color: #09090b; color:#ffffff; font-size:18px;">ANÁLISIS INTERNO (TALLER)</th></tr>
                 <tr><td colspan="2">Hojas necesarias a comprar:</td><td><b>${ultimoTotalHojasCalculado}</b></td></tr>
                 <tr><td colspan="2">Inversión en Madera:</td><td><b>$${costoTotalMelamina.toFixed(2)}</b></td></tr>
                 <tr><td colspan="2">Inversión en Herrajes:</td><td><b>$${costoHerrajes.toFixed(2)}</b></td></tr>
                 <tr><td colspan="2" style="background-color:#e2ded7;"><b>INVERSIÓN TOTAL:</b></td><td style="background-color:#e2ded7;"><b>$${inversionTotal.toFixed(2)}</b></td></tr>
-                
+
                 <tr><td colspan="3"></td></tr>
-                
+
                 <tr><th colspan="3" style="background-color: #c8ff00; color:#09090b; font-size:18px;">PRESUPUESTO AL CLIENTE</th></tr>
                 <tr><td colspan="2">Cobro por Madera (x${multiplicadorMO}):</td><td><b>$${cobroMelamina.toFixed(2)}</b></td></tr>
                 <tr><td colspan="2">Cobro por Herrajes (+${pMargenHerraje}%):</td><td><b>$${cobroHerrajes.toFixed(2)}</b></td></tr>
                 <tr><td colspan="2">Ganancia Libre Total:</td><td><b>$${gananciaLibreTotal.toFixed(2)}</b></td></tr>
                 <tr><td colspan="2" style="color:#09090b; font-size:16px;"><b>PRECIO FINAL SUGERIDO:</b></td><td style="color:#09090b; font-size:16px;"><b>$${precioSugerido.toFixed(2)}</b></td></tr>
-                
+
                 <tr><td colspan="3"></td></tr>
-                
+
                 <tr>
                     <th style="background-color: #09090b; color: #ffffff;">Referencia</th>
                     <th style="background-color: #09090b; color: #ffffff;">Alto Final (${unidadActual})</th>
                     <th style="background-color: #09090b; color: #ffffff;">Ancho Final (${unidadActual})</th>
                 </tr>
             `;
-
             listaCortes.forEach(p => {
                 tablaHTML += `<tr><td>${p.nombre}</td><td>${p.altoFinal}</td><td>${p.anchoFinal}</td></tr>`;
             });
-
             let templateExcel = `
                 <html xmlns:x="urn:schemas-microsoft-com:office:excel">
                     <head><meta charset="utf-8"></head>
                     <body><h3>Reporte de Dashboard</h3><table border="1">${tablaHTML}</table></body>
                 </html>
             `;
-
             let blob = new Blob([templateExcel], { type: 'application/vnd.ms-excel' });
             let url = URL.createObjectURL(blob);
             let enlace = document.createElement('a');
@@ -778,7 +733,7 @@
             enlace.click();
             document.body.removeChild(enlace);
         }
-
+        
         class Packer {
             constructor(w, h) { this.root = { x: 0, y: 0, w: w, h: h }; }
             fit(blocks) {
@@ -806,69 +761,59 @@
                 return node;
             }
         }
-
+        
         function optimizarCortes() {
             if(listaCortes.length === 0) { alert("Añade al menos una pieza a la lista."); return; }
-
             const hojaW = parseFloat(document.getElementById('hojaAncho').value);
             const hojaH = parseFloat(document.getElementById('hojaAlto').value);
-
             let bloques = listaCortes.map(p => ({
                 id: p.id, nombre: p.nombre, w: p.anchoFinal + kerfActual, h: p.altoFinal + kerfActual,
                 originalW: p.anchoFinal, originalH: p.altoFinal
             })).sort((a, b) => (b.w * b.h) - (a.w * a.h));
-
+            
             let hojasUtilizadas = [];
             let bloquesPendientes = [...bloques];
-
             while(bloquesPendientes.length > 0) {
                 let packer = new Packer(hojaW, hojaH);
                 packer.fit(bloquesPendientes);
-                
+
                 let hojaActual = { bloquesAsignados: [] };
                 let bloquesSobrantes = [];
-
                 bloquesPendientes.forEach(b => {
                     if(b.fit) hojaActual.bloquesAsignados.push(b);
                     else bloquesSobrantes.push(b);
                 });
-
                 hojasUtilizadas.push(hojaActual);
                 bloquesPendientes = bloquesSobrantes;
             }
-
             ultimoTotalHojasCalculado = hojasUtilizadas.length;
-            
+
             ultimaAreaUtilizadaCalculada = 0;
             listaCortes.forEach(p => { ultimaAreaUtilizadaCalculada += (p.altoFinal * p.anchoFinal); });
-
             renderizarPresupuesto();
-            
+
             document.getElementById('resultadosOptimizacion').style.display = 'block';
             document.getElementById('resumenHojas').innerHTML = `
                 <div style="font-weight:300; font-size: 24px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
                     Esquemas Operativos <span style="font-size:16px; color:#888;">(${hojasUtilizadas.length} Tableros)</span>
                 </div>
             `;
-            
+
             dibujarHojas(hojasUtilizadas, hojaW, hojaH);
         }
-
+        
         function dibujarHojas(hojas, hojaW, hojaH) {
             const contenedor = document.getElementById('contenedorHojas');
             contenedor.innerHTML = '';
-
             const escalaW = 750 / hojaW;
             const escalaH = 900 / hojaH;
             const escala = Math.min(escalaW, escalaH);
-            
+
             const visualW = hojaW * escala;
             const visualH = hojaH * escala;
-
             hojas.forEach((hoja, index) => {
                 const numPiezas = hoja.bloquesAsignados.length;
                 const grosorText = document.getElementById('grosor').options[document.getElementById('grosor').selectedIndex].text;
-
                 let htmlHoja = `
                     <div class="board-card" style="background: rgba(15,15,15,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(10px);">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
@@ -878,17 +823,16 @@
                             </div>
                             <div style="color: #666; font-size: 16px;">↗</div>
                         </div>
-                        
+
                         <div class="board-visual" style="width: ${visualW}px; height: ${visualH}px;">
                 `;
-
                 hoja.bloquesAsignados.forEach(b => {
                     const pW = (b.w - kerfActual) * escala;
                     const pH = (b.h - kerfActual) * escala;
                     const pX = b.fit.x * escala;
                     const pY = b.fit.y * escala;
                     const rotadaText = b.rotated ? `<br><em style="color:var(--accent-white); font-size:9px; font-style: normal; opacity: 0.7;">Rotada</em>` : '';
-                    
+
                     htmlHoja += `
                         <div class="cut-piece" style="left: ${pX}px; top: ${pY}px; width: ${pW}px; height: ${pH}px;">
                             <div style="background: rgba(15,15,15,0.85); padding: 4px 8px; border-radius: 6px; display:inline-block; border: 1px solid rgba(255,255,255,0.05);">
@@ -899,10 +843,9 @@
                         </div>
                     `;
                 });
-
                 htmlHoja += `
                         </div>
-                        
+
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
                             <div style="border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: #fff; font-weight: 500;">Espesor ${grosorText}</div>
                             <div style="font-size: 12px; color: #888; font-weight: 300;">((•)) ${numPiezas} piezas extraídas</div>
@@ -911,10 +854,9 @@
                 `;
                 contenedor.innerHTML += htmlHoja;
             });
-            
+
             document.getElementById('resultadosOptimizacion').scrollIntoView({ behavior: 'smooth' });
         }
-
         calcular();
     </script>
 </body>
