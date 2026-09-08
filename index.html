@@ -34,19 +34,19 @@
             --neon-hover: #b0e000;
             --accent-white: #ffffff;
             --accent-red: #ff3333;
-            --accent-yellow: #ffd700; /* Amarillo para Modo Edición */
+            --accent-yellow: #ffd700; 
         }
 
         body { 
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
             
             /* --- DEGRADADO PROFUNDO BASADO EN #402626 --- */
-            background-color: #0a0606; /* Negro con sutil tinte cálido */
+            background-color: #0a0606; 
             background-image: 
-                radial-gradient(circle at 15% 0%, #2d1a1a 0%, transparent 40%),  /* Reflejo superior suave */
-                radial-gradient(circle at 95% 50%, #402626 0%, transparent 40%), /* Destello principal derecho con tu color exacto */
-                radial-gradient(circle at 85% 100%, #120909 0%, transparent 40%), /* Sombra inferior con profundidad */
-                linear-gradient(135deg, #0a0606 0%, #000000 100%); /* Base de fondo */
+                radial-gradient(circle at 15% 0%, #2d1a1a 0%, transparent 40%),  
+                radial-gradient(circle at 95% 50%, #402626 0%, transparent 40%), 
+                radial-gradient(circle at 85% 100%, #120909 0%, transparent 40%), 
+                linear-gradient(135deg, #0a0606 0%, #000000 100%); 
             background-attachment: fixed;
             
             color: var(--text-main); 
@@ -63,47 +63,58 @@
             gap: 30px;
         }
 
-        h2 { font-weight: 300; letter-spacing: -0.5px; margin: 0; font-size: 32px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+        /* --- ENCABEZADO Y LOGO --- */
+        .app-top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 20px;
+        }
+        
+        .header-left {
+            display: flex; align-items: center; gap: 25px;
+        }
+        
+        .logo-habitat {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            font-weight: 400; font-size: 28px; letter-spacing: 14px;
+            margin-right: -14px; /* Compensa el tracking visualmente */
+            background: linear-gradient(90deg, #d2a65a 0%, #ebd498 50%, #d2a65a 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+        }
+
+        .header-title {
+            font-size: 14px; font-weight: 300; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 2px; margin: 0;
+            border-left: 1px solid var(--border-color); padding-left: 25px;
+        }
+
+        @media(max-width: 850px) {
+            .app-top-header { flex-direction: column; gap: 20px; align-items: center; }
+            .header-left { flex-direction: column; gap: 12px; align-items: center; }
+            .header-title { border-left: none; border-top: 1px solid var(--border-color); padding-left: 0; padding-top: 12px; text-align: center; }
+            .logo-habitat { margin-right: 0; padding-left: 14px; }
+        }
 
         /* --- HEADERS DE MÓDULO CON DEGRADADO BLANCO --- */
         .styled-header {
-            font-size: 22px;
-            font-weight: 300;
-            margin: 0 0 20px 0;
-            padding: 8px 15px;
+            font-size: 22px; font-weight: 300; margin: 0 0 20px 0; padding: 8px 15px;
             border-left: 3px solid var(--accent-white);
             background: linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--text-main);
-            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: all 0.3s ease;
         }
-        .styled-header span {
-            font-size: 13px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
+        .styled-header span { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
 
-        /* --- SELECTOR DE UNIDADES --- */
-        .unit-selector-container {
-            display: flex; align-items: center; justify-content: space-between;
-            background: transparent; padding: 0; margin-bottom: 10px;
-        }
-        .unit-selector-label { font-weight: 400; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+        /* --- SELECTOR DE UNIDADES (RESTABLECIDO) --- */
+        .unit-selector-container { display: flex; align-items: center; justify-content: space-between; background: transparent; padding: 0; z-index: 2; }
         .unit-toggle { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px; }
         .unit-btn {
             background: transparent; border: 1px solid transparent; padding: 6px 16px; border-radius: 16px;
             font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease;
         }
         .unit-btn.active { 
-            background: rgba(255, 255, 255, 0.15); 
-            color: #fff; 
-            font-weight: 600; 
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-weight: 600; 
+            border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .unit-btn:hover:not(.active) { color: var(--text-main); }
 
@@ -112,16 +123,9 @@
         @media(max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
         
         .config-section { 
-            padding: 24px; 
-            background: rgba(20, 15, 15, 0.45); 
-            border: 1px solid var(--border-color); 
-            border-radius: 16px; 
-            margin-bottom: 20px; 
-            display: flex; 
-            flex-direction: column;
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            padding: 24px; background: rgba(20, 15, 15, 0.45); border: 1px solid var(--border-color); 
+            border-radius: 16px; margin-bottom: 20px; display: flex; flex-direction: column;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
         }
 
@@ -144,42 +148,21 @@
         }
         input:focus, select:focus { outline: none; border-color: var(--accent-white); }
         
-        /* Caja de Herrajes Específica */
         .herrajes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; margin-bottom: 15px; }
         .herrajes-box span.box-title { display: block; font-size: 11px; color: var(--accent-white); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
 
-        /* --- BOTONES PRINCIPALES (GLASSMORPHISM BLANCO) --- */
+        /* --- BOTONES PRINCIPALES --- */
         .btn-primary, .success, .warning, .btn-export { 
-            background: rgba(255,255,255,0.05);
-            color: var(--text-main); 
-            border: 1px solid var(--border-color); 
-            padding: 12px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            font-weight: 500; 
-            transition: all 0.2s; 
-            box-sizing: border-box;
+            background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-color); 
+            padding: 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; 
+            transition: all 0.2s; box-sizing: border-box;
         }
         .btn-primary, .success, .warning { width: 100%; }
         .btn-export { flex: 1; }
+        .btn-primary:hover, .success:hover, .btn-export:hover { background: rgba(255,255,255,0.1); border-color: var(--text-main); }
 
-        .btn-primary:hover, .success:hover, .btn-export:hover { 
-            background: rgba(255,255,255,0.1); 
-            border-color: var(--text-main); 
-        }
-
-        /* Botón de Guardar en Edición (Blanco Sólido) */
-        .warning { 
-            background: rgba(255,255,255,0.9);
-            color: #000;
-            border-color: #fff;
-            font-weight: 600;
-        }
-        .warning:hover { 
-            background: #fff;
-            transform: translateY(-2px);
-        }
+        .warning { background: rgba(255,255,255,0.9); color: #000; border-color: #fff; font-weight: 600; }
+        .warning:hover { background: #fff; transform: translateY(-2px); }
 
         .export-container { display: flex; gap: 10px; margin-top: 15px; }
 
@@ -218,9 +201,7 @@
             background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); 
             border-radius: 12px; padding: 24px; position: relative; display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .budget-card::before {
-            content: ''; position: absolute; top: 0; left: 24px; width: 40px; height: 1px; background: var(--text-muted);
-        }
+        .budget-card::before { content: ''; position: absolute; top: 0; left: 24px; width: 40px; height: 1px; background: var(--text-muted); }
         .budget-card.highlight::before { background: var(--accent-white); width: 60px; height: 2px;}
         .budget-card.highlight-neon::before { background: var(--neon-green); width: 60px; height: 2px;}
         
@@ -229,36 +210,19 @@
         .budget-value.neon { color: var(--neon-green); font-size: 42px; font-weight: 400;}
         .budget-value.white { color: var(--accent-white); }
 
-        /* --- PLANOS DE CORTE (INDUSTRIAL CAD SKETCH) --- */
+        /* --- PLANOS DE CORTE --- */
         .boards-container { margin-top: 20px; display: flex; flex-direction: column; gap: 40px; }
-        
-        .board-visual { 
-            position: relative; 
-            background-color: transparent; 
-            border: 1px solid #ffffff; 
-            margin: 0 auto; 
-            border-radius: 2px;
-        }
-        
+        .board-visual { position: relative; background-color: transparent; border: 1px solid #ffffff; margin: 0 auto; border-radius: 2px; }
         .cut-piece { 
             position: absolute; 
-            /* Relleno rayado en diagonal blanco translúcido */
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 4px,
-                rgba(255, 255, 255, 0.25) 4px,
-                rgba(255, 255, 255, 0.25) 5px
-            );
-            border: 1px solid #ffffff; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 12px; font-weight: 400; color: #fff; 
-            overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
+            background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.25) 4px, rgba(255, 255, 255, 0.25) 5px);
+            border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 400; color: #fff; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
         }
         .board-title { text-align: left; font-weight: 300; margin-bottom: 10px; color: var(--text-main); font-size: 18px; letter-spacing: -0.5px;}
 
         /* --- PDF ESTILOS --- */
         .exporting-pdf #app-container { background: #0a0606 !important; padding: 0 !important; width: 850px !important; margin: 0 auto !important; max-width: none !important; }
+        .exporting-pdf .app-top-header { border-bottom: none !important; margin-bottom: 0 !important; }
         .exporting-pdf .unit-selector-container, .exporting-pdf .columna-izquierda, .exporting-pdf .btn-primary, .exporting-pdf .export-container, .exporting-pdf th:last-child, .exporting-pdf td:last-child { display: none !important; }
         .exporting-pdf .grid-layout { display: block !important; }
         .exporting-pdf .columna-derecha { width: 100% !important; }
@@ -273,9 +237,14 @@
 
     <div class="container" id="app-container">
         
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
-            <h2 style="border: none; padding: 0;">Plataforma de Optimización</h2>
-            <div class="unit-selector-container">
+        <!-- ENCABEZADO CON LOGO Y TÍTULO ELEGANTE -->
+        <div class="app-top-header">
+            <div class="header-left">
+                <div class="logo-habitat">HÁBITAT</div>
+                <h2 class="header-title">Plataforma de Optimización</h2>
+            </div>
+
+            <div class="unit-selector-container" style="z-index: 2;">
                 <div class="unit-toggle">
                     <button class="unit-btn active" id="btn-mm" onclick="cambiarUnidad('mm')">MM</button>
                     <button class="unit-btn" id="btn-cm" onclick="cambiarUnidad('cm')">CM</button>
@@ -368,7 +337,6 @@
                 </div>
 
                 <div id="modulo-anadir-piezas" class="config-section" style="flex-grow: 1; margin-bottom: 0;">
-                    
                     <h3 class="styled-header">02 <span>Añadir Piezas</span></h3>
 
                     <div style="display: flex; gap: 15px;">
@@ -407,9 +375,7 @@
             <div class="columna-derecha" style="display: flex; flex-direction: column; height: 100%;">
                 <div class="config-section" style="flex-grow: 1; margin-bottom: 0;">
                     
-                    <h3 class="styled-header" style="justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 15px;">03 <span>Cola de Trabajo</span></div>
-                    </h3>
+                    <h3 class="styled-header">03 <span>Cola de Trabajo</span></h3>
                     
                     <div class="table-scroll-container" style="margin-bottom: 20px;">
                         <table id="tablaCortes">
@@ -444,8 +410,6 @@
                 <!-- Se llena mediante JS -->
             </div>
 
-            <!-- RECIPIENTE CORREGIDO PARA EVITAR BUG DE RENDERIZADO -->
-            <div id="resumenHojas" style="text-align: left; font-size: 24px; font-weight: 300; margin-top: 50px; margin-bottom: 20px; color: var(--text-main);"></div>
             <div id="contenedorHojas" class="boards-container"></div>
         </div>
     </div>
@@ -880,7 +844,6 @@
 
             renderizarPresupuesto();
             
-            // ASEGURAMOS QUE EL CONTENEDOR P DE RESUMEN SE LLENE Y MUESTRE
             document.getElementById('resultadosOptimizacion').style.display = 'block';
             document.getElementById('resumenHojas').innerHTML = `
                 <div style="font-weight:300; font-size: 24px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
@@ -908,7 +871,6 @@
 
                 let htmlHoja = `
                     <div class="board-card" style="background: rgba(15,15,15,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(10px);">
-                        <!-- HEADER SKETCH -->
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
                             <div>
                                 <div style="color: #ffffff; font-size: 20px; font-weight: 400; margin-bottom: 4px;">Tablero 0${index + 1}</div>
@@ -917,7 +879,6 @@
                             <div style="color: #666; font-size: 16px;">↗</div>
                         </div>
                         
-                        <!-- SKETCH VISUAL (TABLERO Y PIEZAS BLANCAS RAYADAS) -->
                         <div class="board-visual" style="width: ${visualW}px; height: ${visualH}px;">
                 `;
 
@@ -926,11 +887,10 @@
                     const pH = (b.h - kerfActual) * escala;
                     const pX = b.fit.x * escala;
                     const pY = b.fit.y * escala;
-                    const rotadaText = b.rotated ? `<br><em style="color:#ffffff; font-size:9px; font-style: normal; opacity: 0.7;">Rotada</em>` : '';
+                    const rotadaText = b.rotated ? `<br><em style="color:var(--accent-white); font-size:9px; font-style: normal; opacity: 0.7;">Rotada</em>` : '';
                     
                     htmlHoja += `
                         <div class="cut-piece" style="left: ${pX}px; top: ${pY}px; width: ${pW}px; height: ${pH}px;">
-                            <!-- Etiqueta negra sutil para que el texto sea legible sobre el rayado -->
                             <div style="background: rgba(15,15,15,0.85); padding: 4px 8px; border-radius: 6px; display:inline-block; border: 1px solid rgba(255,255,255,0.05);">
                                 <strong style="color:var(--accent-white); font-size:11px; font-weight:500; letter-spacing:0.5px;">${b.nombre}</strong><br>
                                 <span style="color:#aaaaaa; font-size:10px;">${b.rotated ? b.originalH : b.originalW} x ${b.rotated ? b.originalW : b.originalH}</span>
@@ -943,7 +903,6 @@
                 htmlHoja += `
                         </div>
                         
-                        <!-- FOOTER SKETCH -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
                             <div style="border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: #fff; font-weight: 500;">Espesor ${grosorText}</div>
                             <div style="font-size: 12px; color: #888; font-weight: 300;">((•)) ${numPiezas} piezas extraídas</div>
