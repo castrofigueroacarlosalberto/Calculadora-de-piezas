@@ -34,8 +34,8 @@
             --accent-white: #ffffff;
             --accent-red: #ff3333;
             --accent-yellow: #ffd700;
-            --accent-soft-red: #ff5e5e; /* Rojo estético para pedacería y desperdicio */
-            --accent-blue: #3399ff; /* Azul estético y funcional para ganancia */
+            --accent-soft-red: #ff5e5e; 
+            --accent-blue: #3399ff; 
         }
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -112,12 +112,16 @@
         }
         .unit-btn:hover:not(.active) { color: var(--text-main); }
         /* --- LAYOUT Y PANELES --- */
-        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media(max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+        @media(max-width: 768px) { 
+            .grid-layout { grid-template-columns: 1fr; } 
+            .mod-3-container { flex-direction: column; }
+            .mod-3-actions { width: 100% !important; margin-top: 15px; }
+        }
 
         .config-section {
             padding: 24px; background: rgba(20, 15, 15, 0.45); border: 1px solid var(--border-color);
-            border-radius: 16px; margin-bottom: 20px; display: flex; flex-direction: column;
+            border-radius: 16px; display: flex; flex-direction: column;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
         }
@@ -139,8 +143,9 @@
         }
         input:focus, select:focus { outline: none; border-color: var(--accent-white); }
 
-        .herrajes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; margin-bottom: 15px; }
-        .herrajes-box span.box-title { display: block; font-size: 11px; color: var(--accent-white); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .box-title { display: block; font-size: 11px; color: var(--accent-white); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .herrajes-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; margin-bottom: 15px; flex-grow: 1; }
+        
         /* --- BOTONES PRINCIPALES --- */
         .btn-primary, .success, .warning, .btn-export {
             background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-color);
@@ -152,7 +157,11 @@
         .btn-primary:hover, .success:hover, .btn-export:hover { background: rgba(255,255,255,0.1); border-color: var(--text-main); }
         .warning { background: rgba(255,255,255,0.9); color: #000; border-color: #fff; font-weight: 600; }
         .warning:hover { background: #fff; transform: translateY(-2px); }
-        .export-container { display: flex; gap: 10px; margin-top: 15px; }
+        .export-container { display: flex; gap: 10px; margin-top: 10px; }
+        
+        .btn-clear-list { border-color: rgba(255, 94, 94, 0.4); color: var(--accent-soft-red); }
+        .btn-clear-list:hover { border-color: var(--accent-soft-red); background: rgba(255, 94, 94, 0.1); }
+        
         /* --- VISUALIZADOR DE PIEZA --- */
         .piece-container { display: grid; grid-template-columns: 50px 160px 50px; grid-template-rows: 50px 160px 50px; gap: 8px; align-items: center; justify-items: center; margin: 25px auto; width: max-content; }
         .piece-center-wrapper { grid-column: 2; grid-row: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -165,7 +174,7 @@
         .btn-left { grid-column: 1; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; transform: rotate(180deg); }
         .btn-right { grid-column: 3; grid-row: 2; height: 100%; width: 100%; writing-mode: vertical-rl; }
         /* --- TABLA --- */
-        .table-scroll-container { flex-grow: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; background: rgba(0,0,0,0.3); min-height: 250px; margin-bottom: 20px; }
+        .table-scroll-container { flex-grow: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; background: rgba(0,0,0,0.3); min-height: 200px; max-height: 320px; }
         .table-scroll-container::-webkit-scrollbar { width: 6px; }
         .table-scroll-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
         table { width: 100%; border-collapse: collapse; }
@@ -177,6 +186,7 @@
         .btn-edit:hover { border-color: var(--accent-white); color: var(--accent-white); }
         .btn-delete:hover { border-color: var(--accent-red); color: var(--accent-red); }
         .actions-cell { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        
         /* --- PRESUPUESTO ESTILO DASHBOARD --- */
         .budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         @media(max-width: 600px) { .budget-grid { grid-template-columns: 1fr; } }
@@ -200,12 +210,12 @@
             border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 400; color: #fff; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
         }
         .board-title { text-align: left; font-weight: 300; margin-bottom: 10px; color: var(--text-main); font-size: 18px; letter-spacing: -0.5px;}
+        
         /* --- PDF ESTILOS --- */
         .exporting-pdf #app-container { background: #0a0606 !important; padding: 0 !important; width: 850px !important; margin: 0 auto !important; max-width: none !important; }
         .exporting-pdf .app-top-header { border-bottom: none !important; margin-bottom: 0 !important; }
-        .exporting-pdf .unit-selector-container, .exporting-pdf .columna-izquierda, .exporting-pdf .btn-primary, .exporting-pdf .export-container, .exporting-pdf th:last-child, .exporting-pdf td:last-child { display: none !important; }
-        .exporting-pdf .grid-layout { display: block !important; }
-        .exporting-pdf .columna-derecha { width: 100% !important; }
+        .exporting-pdf .hide-on-pdf { display: none !important; }
+        .exporting-pdf .unit-selector-container, .exporting-pdf .mod-3-actions, .exporting-pdf th:last-child, .exporting-pdf td:last-child { display: none !important; }
         .exporting-pdf .table-scroll-container { max-height: none !important; overflow: visible !important; border: 1px solid var(--border-color) !important; margin-bottom: 30px !important; }
         .exporting-pdf tr { page-break-inside: avoid; }
         .exporting-pdf .boards-container { display: block !important; }
@@ -230,148 +240,185 @@
                 </div>
             </div>
         </div>
-        <div class="grid-layout" style="margin-top: 20px;">
-            <!-- Columna Izquierda -->
-            <div class="columna-izquierda" style="display: flex; flex-direction: column; height: 100%;">
+        
+        <!-- TOP ROW: Módulo 01 y Módulo 02 alineados con misma altura -->
+        <div class="grid-layout hide-on-pdf" style="margin-top: 10px;">
+            
+            <!-- IZQUIERDA: Módulo 01 -->
+            <div class="config-section" style="margin-bottom: 0;">
+                <h3 class="styled-header">01 <span>Parámetros Base</span></h3>
 
-                <div class="config-section">
-                    <h3 class="styled-header">01 <span>Parámetros Base</span></h3>
-
-                    <div style="display: flex; gap: 15px; margin-bottom: 5px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label id="lblHojaAlto">Hoja Alto (mm)</label>
-                            <input type="number" id="hojaAlto" value="2440">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label id="lblHojaAncho">Hoja Ancho (mm)</label>
-                            <input type="number" id="hojaAncho" value="1220">
-                        </div>
+                <div style="display: flex; gap: 15px; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <label>Mult. (Ganancia)</label>
+                        <select id="multiplicadorManoObra" onchange="actualizarPresupuestoEnTiempoReal()">
+                            <option value="1">Solo Material (x1)</option>
+                            <option value="1.5">Material x 1.5</option>
+                            <option value="2" selected>Material x 2</option>
+                            <option value="2.5">Material x 2.5</option>
+                            <option value="3">Material x 3</option>
+                        </select>
                     </div>
-
-                    <div style="display: flex; gap: 15px; margin-bottom: 5px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label id="lblGrosor">Grosor Material</label>
-                            <select id="grosor" onchange="calcular()">
-                                <option value="15" data-mm="15">15 mm</option>
-                                <option value="18" data-mm="18">18 mm</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Precio Hoja ($)</label>
-                            <input type="number" id="precioHoja" value="1350" oninput="actualizarPresupuestoEnTiempoReal()">
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 15px; margin-bottom: 10px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Multiplicador (Ganancia)</label>
-                            <select id="multiplicadorManoObra" onchange="actualizarPresupuestoEnTiempoReal()">
-                                <option value="1">Solo Material (x1)</option>
-                                <option value="1.5">Material x 1.5</option>
-                                <option value="2" selected>Material x 2</option>
-                                <option value="2.5">Material x 2.5</option>
-                                <option value="3">Material x 3</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Base Financiera</label>
-                            <select id="baseManoObra" onchange="actualizarPresupuestoEnTiempoReal()">
-                                <option value="inversion" selected>Inversión Total (Hojas)</option>
-                                <option value="usado">Costo Real (Usado)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="herrajes-box">
-                        <span class="box-title">Módulo de Herrajes</span>
-                        <div style="display: flex; gap: 15px; margin-bottom: 5px;">
-                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                                <label>Cant. Bisagras</label>
-                                <input type="number" id="cantBisagras" value="0" min="0" oninput="actualizarPresupuestoEnTiempoReal()">
-                            </div>
-                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                                <label>Precio c/u ($)</label>
-                                <input type="number" id="precioBisagra" value="35" min="0" oninput="actualizarPresupuestoEnTiempoReal()">
-                            </div>
-                        </div>
-
-                        <div style="display: flex; gap: 15px;">
-                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                                <label>Otros Gastos ($)</label>
-                                <input type="number" id="costoOtrosHerrajes" value="0" placeholder="Correderas..." oninput="actualizarPresupuestoEnTiempoReal()">
-                            </div>
-                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                                <label>Margen Herrajes</label>
-                                <select id="margenHerrajes" onchange="actualizarPresupuestoEnTiempoReal()">
-                                    <option value="1">Al Costo (+0%)</option>
-                                    <option value="1.15">+ 15%</option>
-                                    <option value="1.20" selected>+ 20%</option>
-                                    <option value="1.30">+ 30%</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <label>Base Financiera</label>
+                        <select id="baseManoObra" onchange="actualizarPresupuestoEnTiempoReal()">
+                            <option value="inversion" selected>Inv. Total (Hojas)</option>
+                            <option value="usado">Costo Real (Usado)</option>
+                        </select>
                     </div>
                 </div>
-                <div id="modulo-anadir-piezas" class="config-section" style="flex-grow: 1; margin-bottom: 0;">
-                    <h3 class="styled-header">02 <span>Añadir Piezas</span></h3>
+
+                <!-- NUEVO TÍTULO AÑADIDO AQUÍ -->
+                <span class="box-title">Hoja Base</span>
+
+                <div style="display: flex; gap: 15px; margin-bottom: 5px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label id="lblHojaAlto">Hoja Alto (mm)</label>
+                        <input type="number" id="hojaAlto" value="2440">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label id="lblHojaAncho">Hoja Ancho (mm)</label>
+                        <input type="number" id="hojaAncho" value="1220">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-bottom: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label id="lblGrosor">Grosor Material</label>
+                        <select id="grosor" onchange="calcular()">
+                            <option value="15" data-mm="15">15 mm</option>
+                            <option value="18" data-mm="18">18 mm</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Precio Hoja ($)</label>
+                        <input type="number" id="precioHoja" value="1350" oninput="actualizarPresupuestoEnTiempoReal()">
+                    </div>
+                </div>
+                
+                <div class="herrajes-box">
+                    <span class="box-title">Módulo de Herrajes</span>
+                    <div style="display: flex; gap: 15px; margin-bottom: 5px;">
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label>Cant. Bisagras</label>
+                            <input type="number" id="cantBisagras" value="0" min="0" oninput="actualizarPresupuestoEnTiempoReal()">
+                        </div>
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label>Precio c/u ($)</label>
+                            <input type="number" id="precioBisagra" value="35" min="0" oninput="actualizarPresupuestoEnTiempoReal()">
+                        </div>
+                    </div>
+
                     <div style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label id="lblPiezaAlto">Alto</label>
-                            <input type="number" id="piezaAlto" value="1500" oninput="calcular()">
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label>Otros Gastos ($)</label>
+                            <input type="number" id="costoOtrosHerrajes" value="0" placeholder="Correderas..." oninput="actualizarPresupuestoEnTiempoReal()">
                         </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label id="lblPiezaAncho">Ancho</label>
-                            <input type="number" id="piezaAncho" value="500" oninput="calcular()">
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label>Margen Herrajes</label>
+                            <select id="margenHerrajes" onchange="actualizarPresupuestoEnTiempoReal()">
+                                <option value="1">Al Costo (+0%)</option>
+                                <option value="1.15">+ 15%</option>
+                                <option value="1.20" selected>+ 20%</option>
+                                <option value="1.30">+ 30%</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="piece-container">
-                        <button id="btnTop" class="discount-btn btn-top" onclick="toggleDiscount('top')">- 15 mm</button>
-                        <button id="btnLeft" class="discount-btn btn-left" onclick="toggleDiscount('left')">- 15 mm</button>
-                        <div class="piece-center-wrapper">
-                            <div class="piece-box" id="visualizadorPieza">
-                                <span class="texto-medida" id="textoMedida">1500<br>x<br>500</span>
-                            </div>
-                        </div>
-                        <button id="btnRight" class="discount-btn btn-right" onclick="toggleDiscount('right')">- 15 mm</button>
-                        <button id="btnBottom" class="discount-btn btn-bottom" onclick="toggleDiscount('bottom')">- 15 mm</button>
-                    </div>
-                    <div class="form-group">
-                        <label>Identificador</label>
-                        <input type="text" id="nombrePieza" placeholder="Ej. Puerta Alacena" value="Pieza 1">
-                    </div>
-
-                    <button id="btnAgregarPieza" class="success" onclick="agregarPieza()" style="margin-top: auto;">Ingresar a la lista</button>
-                </div>
-            </div>
-            <!-- Columna Derecha -->
-            <div class="columna-derecha" style="display: flex; flex-direction: column; height: 100%;">
-                <div class="config-section" style="flex-grow: 1; margin-bottom: 0;">
-
-                    <h3 class="styled-header">03 <span>Cola de Trabajo</span></h3>
-
-                    <div class="table-scroll-container" style="margin-bottom: 20px;">
-                        <table id="tablaCortes">
-                            <thead>
-                                <tr>
-                                    <th>Ref.</th>
-                                    <th>Medida</th>
-                                    <th>Modificar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Las piezas aparecen aquí -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <button class="btn-primary" onclick="optimizarCortes()" style="margin-top: auto;">Ejecutar Análisis Total</button>
-
-                    <div class="export-container">
-                        <button class="btn-export pdf-btn" onclick="exportarPDF()">Exportar PDF</button>
-                        <button class="btn-export excel-btn" onclick="exportarExcel()">Exportar Excel</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="resultadosOptimizacion" class="salto-pagina-pdf" style="margin-top: 50px; display: none;">
+            
+            <!-- DERECHA: Módulo 02 -->
+            <div id="modulo-anadir-piezas" class="config-section" style="margin-bottom: 0;">
+                <h3 class="styled-header">02 <span>Añadir Piezas</span></h3>
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label id="lblPiezaAlto">Alto</label>
+                        <input type="number" id="piezaAlto" value="1500" oninput="calcular()">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label id="lblPiezaAncho">Ancho</label>
+                        <input type="number" id="piezaAncho" value="500" oninput="calcular()">
+                    </div>
+                </div>
+                
+                <div class="piece-container">
+                    <button id="btnTop" class="discount-btn btn-top" onclick="toggleDiscount('top')">- 15 mm</button>
+                    <button id="btnLeft" class="discount-btn btn-left" onclick="toggleDiscount('left')">- 15 mm</button>
+                    <div class="piece-center-wrapper">
+                        <div class="piece-box" id="visualizadorPieza">
+                            <span class="texto-medida" id="textoMedida">1500<br>x<br>500</span>
+                        </div>
+                    </div>
+                    <button id="btnRight" class="discount-btn btn-right" onclick="toggleDiscount('right')">- 15 mm</button>
+                    <button id="btnBottom" class="discount-btn btn-bottom" onclick="toggleDiscount('bottom')">- 15 mm</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: auto;">
+                    <label>Identificador</label>
+                    <input type="text" id="nombrePieza" placeholder="Ej. Puerta Alacena" value="Pieza 1">
+                </div>
+
+                <button id="btnAgregarPieza" class="success" onclick="agregarPieza()">Ingresar a la lista</button>
+            </div>
+            
+        </div> <!-- Fin Top Row -->
+
+        <!-- BOTTOM ROW: Módulo 03 Horizontal -->
+        <div class="config-section" style="margin-top: 10px;">
+            <h3 class="styled-header">03 <span>Cola de Trabajo</span></h3>
+            
+            <div class="mod-3-container" style="display: flex; gap: 30px; align-items: stretch;">
+                
+                <!-- Tabla a la izquierda tomando el mayor espacio posible -->
+                <div class="table-scroll-container">
+                    <table id="tablaCortes">
+                        <thead>
+                            <tr>
+                                <th>Ref.</th>
+                                <th>Medida</th>
+                                <th>Modificar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las piezas aparecen aquí -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Botones y mini dashboard a la derecha -->
+                <div class="mod-3-actions" style="display: flex; flex-direction: column; justify-content: space-between; width: 300px; gap: 15px;">
+                    
+                    <!-- NUEVO PANEL DE INFO RAPIDA -->
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                            <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Total de piezas</span>
+                            <span id="contadorPiezas" style="font-size: 24px; color: var(--accent-white); font-weight: 300;">0</span>
+                        </div>
+            
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Grosor de Disco (Kerf) - mm</label>
+                            <input type="number" id="inputKerf" value="3" step="0.5" min="0" onchange="actualizarKerf()" style="padding: 10px;">
+                        </div>
+            
+                        <button class="btn-action btn-clear-list" onclick="vaciarLista()" style="width: 100%; padding: 10px; margin-top: 5px;">Vaciar Lista</button>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <button class="btn-primary" onclick="optimizarCortes()" style="padding: 16px; font-size: 14px; font-weight: 600;">Generar Despiece</button>
+                        <div class="export-container" style="margin-top: 0;">
+                            <button class="btn-export pdf-btn" onclick="exportarPDF()">Exportar PDF</button>
+                            <button class="btn-export excel-btn" onclick="exportarExcel()">Exportar Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Fin Bottom Row -->
+
+
+        <!-- MÓDULO 04: DASHBOARD Y PLANOS (Se muestran tras dar Ejecutar Análisis) -->
+        <div id="resultadosOptimizacion" class="salto-pagina-pdf" style="margin-top: 40px; display: none;">
 
             <h3 class="styled-header">04 <span>Dashboard Financiero</span></h3>
 
@@ -379,24 +426,31 @@
                 <!-- Se llena mediante JS -->
             </div>
             
-            <!-- CONTENEDOR AÑADIDO PARA EVITAR EL ERROR JS Y DIBUJAR LOS PLANOS -->
             <div id="resumenHojas" style="margin-top: 40px; margin-bottom: 20px;"></div>
             
             <div id="contenedorHojas" class="boards-container"></div>
         </div>
+        
     </div>
+
     <script>
         let listaCortes = [];
         let descuentos = { top: false, bottom: false, left: false, right: false };
         let unidadActual = 'mm';
         const factoresUnidad = { 'mm': 1, 'cm': 10, 'm': 1000 };
-        const KERF_BASE_MM = 3;
+        
+        let KERF_BASE_MM = 3; /* Ahora es dinámica */
         let kerfActual = 3;     
         let idPiezaEnEdicion = null;
 
         let ultimoTotalHojasCalculado = 0;
         let ultimaAreaUtilizadaCalculada = 0;
         
+        function actualizarKerf() {
+            KERF_BASE_MM = parseFloat(document.getElementById('inputKerf').value) || 0;
+            kerfActual = KERF_BASE_MM / factoresUnidad[unidadActual];
+        }
+
         function cambiarUnidad(nuevaUnidad) {
             if (nuevaUnidad === unidadActual) return;
             document.querySelectorAll('.unit-btn').forEach(btn => btn.classList.remove('active'));
@@ -511,6 +565,7 @@
 
             calcular();
             actualizarTabla();
+            
             // APLICAR GLOW AMARILLO Y HACER SCROLL SUAVE AL FORMULARIO
             const moduloEditar = document.getElementById('modulo-anadir-piezas');
             moduloEditar.classList.add('edit-mode-active');
@@ -528,6 +583,19 @@
                 document.getElementById('modulo-anadir-piezas').classList.remove('edit-mode-active');
             }
             actualizarTabla();
+        }
+
+        function vaciarLista() {
+            if (listaCortes.length === 0) return;
+            if (confirm("¿Estás seguro de que deseas vaciar toda la lista de piezas?")) {
+                listaCortes = [];
+                idPiezaEnEdicion = null;
+                document.getElementById('btnAgregarPieza').innerText = "Ingresar a la lista";
+                document.getElementById('btnAgregarPieza').className = "success";
+                document.getElementById('modulo-anadir-piezas').classList.remove('edit-mode-active');
+                actualizarTabla();
+                document.getElementById('resultadosOptimizacion').style.display = 'none';
+            }
         }
         
         function actualizarTabla() {
@@ -548,6 +616,8 @@
                     </tr>
                 `;
             });
+            // Actualizar el contador del mini-dashboard
+            document.getElementById('contadorPiezas').innerText = listaCortes.length;
         }
         
         function actualizarPresupuestoEnTiempoReal() {
@@ -595,6 +665,7 @@
             
             document.getElementById('panelPresupuesto').innerHTML = `
                 <div style="margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 20px; font-size: 20px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Inversión</h3>
                     <div class="budget-grid">
                         <div class="budget-card">
                             <span class="budget-label">Inversión Madera (${ultimoTotalHojasCalculado} hojas)</span>
@@ -692,6 +763,7 @@
             const gananciaLibreTotal = (cobroMelamina - baseDeCobroMelamina) + (cobroHerrajes - costoHerrajes);
             const precioSugerido = cobroMelamina + cobroHerrajes;
             const pMargenHerraje = Math.round((margenHerrajes - 1) * 100);
+            
             let tablaHTML = `
                 <tr><th colspan="3" style="background-color: #09090b; color:#ffffff; font-size:18px;">ANÁLISIS INTERNO (TALLER)</th></tr>
                 <tr><td colspan="2">Hojas necesarias a comprar:</td><td><b>${ultimoTotalHojasCalculado}</b></td></tr>
@@ -766,6 +838,7 @@
             if(listaCortes.length === 0) { alert("Añade al menos una pieza a la lista."); return; }
             const hojaW = parseFloat(document.getElementById('hojaAncho').value);
             const hojaH = parseFloat(document.getElementById('hojaAlto').value);
+            
             let bloques = listaCortes.map(p => ({
                 id: p.id, nombre: p.nombre, w: p.anchoFinal + kerfActual, h: p.altoFinal + kerfActual,
                 originalW: p.anchoFinal, originalH: p.altoFinal
