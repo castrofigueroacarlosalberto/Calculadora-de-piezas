@@ -91,14 +91,16 @@
             .header-title { border-left: none; border-top: 1px solid var(--border-color); padding-left: 0; padding-top: 12px; text-align: center; }
             .logo-habitat { margin-right: 0; padding-left: 14px; }
         }
-        /* --- HEADERS DE MÓDULO CON DEGRADADO BLANCO --- */
+        
+        /* --- HEADERS DE MÓDULO (SIN NÚMERO) --- */
         .styled-header {
-            font-size: 22px; font-weight: 300; margin: 0 0 20px 0; padding: 8px 15px;
+            font-size: 13px; font-weight: 500; margin: 0 0 20px 0; padding: 8px 15px;
             border-left: 3px solid var(--accent-white);
             background: linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
-            display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 15px; color: var(--text-muted); 
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease;
         }
-        .styled-header span { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+
         /* --- SELECTOR DE UNIDADES --- */
         .unit-selector-container { display: flex; align-items: center; justify-content: space-between; background: transparent; padding: 0; z-index: 2; }
         .unit-toggle { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px; }
@@ -246,64 +248,7 @@
             border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 400; color: #fff; overflow: hidden; box-sizing: border-box; text-align: center; padding: 2px;
         }
         .board-title { text-align: left; font-weight: 300; margin-bottom: 10px; color: var(--text-main); font-size: 18px; letter-spacing: -0.5px;}
-        
-        /* --- EXPORTACIÓN A PDF EN BLANCO Y NEGRO --- */
-        body.exporting-pdf {
-            --bg-dark: #ffffff;
-            --border-color: #000000;
-            --text-main: #000000;
-            --text-muted: #333333;
-            --neon-green: #000000;
-            --accent-white: #000000;
-            --accent-red: #000000;
-            --accent-yellow: #000000;
-            --accent-soft-red: #000000;
-            --accent-blue: #000000;
-            background-color: #ffffff !important;
-            background-image: none !important;
-            color: #000000 !important;
-        }
 
-        body.exporting-pdf #app-container { background: #ffffff !important; padding: 0 !important; width: 100% !important; max-width: none !important; margin: 0 auto !important; }
-        body.exporting-pdf .app-top-header { border-bottom: 2px solid #000000 !important; margin-bottom: 20px !important; }
-        
-        /* Volver Logo de Habitat a Color Negro sólido */
-        body.exporting-pdf .logo-habitat {
-            background: none !important;
-            color: #000000 !important;
-            -webkit-text-fill-color: #000000 !important;
-            filter: none !important;
-        }
-        
-        body.exporting-pdf .header-title { color: #000000 !important; border-left-color: #000000 !important; }
-
-        /* Ocultar elementos no deseados */
-        body.exporting-pdf .hide-on-pdf,
-        body.exporting-pdf .unit-selector-container,
-        body.exporting-pdf .mod-3-actions,
-        body.exporting-pdf th:last-child,
-        body.exporting-pdf td:last-child { display: none !important; }
-
-        body.exporting-pdf .config-section { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-bottom: 20px !important;}
-        body.exporting-pdf .styled-header { border-left-color: #000000 !important; background: transparent !important; color: #000000 !important; padding-left: 10px !important;}
-        body.exporting-pdf .styled-header span { color: #555555 !important; }
-
-        /* Estilos Tabla PDF */
-        body.exporting-pdf .table-scroll-container { max-height: none !important; overflow: visible !important; border: 1px solid #000000 !important; background: transparent !important; margin-bottom: 30px !important; }
-        body.exporting-pdf th { background-color: #f0f0f0 !important; color: #000000 !important; border-bottom: 2px solid #000000 !important; }
-        body.exporting-pdf td { border-bottom: 1px solid #dddddd !important; color: #000000 !important; }
-
-        /* Estilos Dashboard PDF */
-        body.exporting-pdf .budget-card { background: transparent !important; border: 1px solid #000000 !important; }
-        body.exporting-pdf .budget-card::before { background: #000000 !important; }
-
-        /* Estilos Planos / Despiece PDF */
-        body.exporting-pdf .board-card { background: transparent !important; border: 1px solid #000000 !important; backdrop-filter: none !important;}
-        body.exporting-pdf .board-visual { border: 2px solid #000000 !important; }
-        body.exporting-pdf .cut-piece { background: transparent !important; border: 1px solid #000000 !important; }
-        body.exporting-pdf .piece-label-box { background: #ffffff !important; border: 1px dashed #000000 !important; }
-
-        body.exporting-pdf .salto-pagina-pdf { page-break-before: always; }
     </style>
 </head>
 <body>
@@ -324,12 +269,12 @@
             </div>
         </div>
         
-        <!-- TOP ROW: Módulo 01 y Módulo 02 (Se ocultan en PDF) -->
-        <div class="grid-layout hide-on-pdf" style="margin-top: 10px;">
+        <!-- TOP ROW -->
+        <div class="grid-layout" style="margin-top: 10px;">
             
-            <!-- IZQUIERDA: Módulo 01 -->
+            <!-- IZQUIERDA: Módulo Parámetros -->
             <div class="config-section" style="margin-bottom: 0;">
-                <h3 class="styled-header">01 <span>Parámetros Base</span></h3>
+                <h3 class="styled-header">Parámetros Base</h3>
 
                 <div style="display: flex; gap: 15px; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                     <div class="form-group" style="flex: 1; margin-bottom: 0;">
@@ -409,9 +354,9 @@
                 </div>
             </div>
             
-            <!-- DERECHA: Módulo 02 -->
+            <!-- DERECHA: Módulo Añadir Piezas -->
             <div id="modulo-anadir-piezas" class="config-section" style="margin-bottom: 0;">
-                <h3 class="styled-header">02 <span>Añadir Piezas</span></h3>
+                <h3 class="styled-header">Añadir Piezas</h3>
                 <div style="display: flex; gap: 15px;">
                     <div class="form-group" style="flex: 1;">
                         <label id="lblPiezaAlto">Alto</label>
@@ -451,13 +396,12 @@
             
         </div> <!-- Fin Top Row -->
 
-        <!-- BOTTOM ROW: Módulo 03 Horizontal (Visible en PDF pero sin botones) -->
+        <!-- BOTTOM ROW: Módulo Cola de Trabajo -->
         <div class="config-section" style="margin-top: 10px;">
-            <h3 class="styled-header">03 <span>Lista de Piezas</span></h3>
+            <h3 class="styled-header">Lista de Piezas</h3>
             
             <div class="mod-3-container" style="display: flex; gap: 30px; align-items: stretch;">
                 
-                <!-- Tabla a la izquierda -->
                 <div class="table-scroll-container">
                     <table id="tablaCortes">
                         <thead>
@@ -473,7 +417,6 @@
                     </table>
                 </div>
 
-                <!-- Botones y mini dashboard (Ocultos en PDF) -->
                 <div class="mod-3-actions" style="display: flex; flex-direction: column; justify-content: space-between; width: 300px; gap: 15px;">
                     
                     <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
@@ -497,13 +440,12 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- Fin Bottom Row -->
+        </div>
 
+        <!-- MÓDULO RESULTADOS (Dashboard y Tableros) -->
+        <div id="resultadosOptimizacion" style="margin-top: 40px; display: none;">
 
-        <!-- MÓDULO 04: DASHBOARD Y PLANOS (Se muestran tras dar Ejecutar Análisis) -->
-        <div id="resultadosOptimizacion" class="salto-pagina-pdf" style="margin-top: 40px; display: none;">
-
-            <h3 class="styled-header">04 <span>Dashboard Financiero</span></h3>
+            <h3 class="styled-header">Dashboard Financiero</h3>
 
             <div id="panelPresupuesto">
                 <!-- Se llena mediante JS -->
@@ -803,25 +745,139 @@
         
         function exportarPDF() {
             if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
-            document.body.classList.add('exporting-pdf');
 
-            setTimeout(() => {
-                const elemento = document.getElementById('app-container');
-                const opciones = {
-                    margin:       [15, 10, 15, 10], /* Margen agregado para impresión limpia */
-                    filename:     'Reporte_Despiece.pdf',
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak:    { mode: ['css', 'legacy'] }
-                };
-                html2pdf().set(opciones).from(elemento).save().then(() => {
-                    document.body.classList.remove('exporting-pdf');
-                }).catch(error => {
-                    document.body.classList.remove('exporting-pdf');
-                    alert("Ocurrió un error al generar el PDF.");
-                });
-            }, 400);
+            // Recalcular datos para inyectarlos en la plantilla de PDF
+            const fm = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
+            
+            const precioHoja = parseFloat(document.getElementById('precioHoja').value) || 0;
+            const multiplicadorMO = parseFloat(document.getElementById('multiplicadorManoObra').value) || 1;
+            const baseManoObra = document.getElementById('baseManoObra').value;
+            const cantBisagras = parseInt(document.getElementById('cantBisagras').value) || 0;
+            const precioBisagra = parseFloat(document.getElementById('precioBisagra').value) || 0;
+            const costoOtrosHerrajes = parseFloat(document.getElementById('costoOtrosHerrajes').value) || 0;
+
+            const costoHerrajes = (cantBisagras * precioBisagra) + costoOtrosHerrajes;
+            const margenHerrajes = parseFloat(document.getElementById('margenHerrajes').value) || 1;
+            const costoTotalInversion = ultimoTotalHojasCalculado * precioHoja;
+            const inversionTotalTaller = costoTotalInversion + costoHerrajes;
+            const hojaW = parseFloat(document.getElementById('hojaAncho').value) || 0;
+            const hojaH = parseFloat(document.getElementById('hojaAlto').value) || 0;
+            const areaDeUnaHoja = hojaW * hojaH;
+            const areaDeTodasLasHojas = areaDeUnaHoja * ultimoTotalHojasCalculado;
+            
+            const porcentajeAprovechamiento = areaDeTodasLasHojas > 0 ? (ultimaAreaUtilizadaCalculada / areaDeTodasLasHojas) * 100 : 0;
+            const porcentajeDesperdicio = areaDeTodasLasHojas > 0 ? 100 - porcentajeAprovechamiento : 0;
+            
+            const costoProrrateado = areaDeUnaHoja > 0 ? (ultimaAreaUtilizadaCalculada / areaDeUnaHoja) * precioHoja : 0;
+            const costoPedaceria = costoTotalInversion - costoProrrateado;
+            const baseDeCobroMelamina = (baseManoObra === 'inversion') ? costoTotalInversion : costoProrrateado;
+
+            const cobroMelamina = baseDeCobroMelamina * multiplicadorMO;
+            const cobroHerrajes = costoHerrajes * margenHerrajes;
+            const gananciaLibreTotal = (cobroMelamina - baseDeCobroMelamina) + (cobroHerrajes - costoHerrajes);
+            const precioVentaSugerido = cobroMelamina + cobroHerrajes;
+            const pMargenHerraje = Math.round((margenHerrajes - 1) * 100);
+
+            // Generamos un DOM temporal y super limpio sólo para el PDF
+            let pdfHtml = `
+                <div id="pdf-wrapper" style="padding: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #000; background: #fff; width: 800px; margin: 0 auto; box-sizing: border-box;">
+                    
+                    <h1 style="text-align:left; letter-spacing: 12px; font-weight:400; font-size: 28px; margin-bottom: 30px; text-transform: uppercase;">HÁBITAT</h1>
+
+                    <h3 style="border-left: 3px solid #000; padding-left: 10px; font-size: 14px; text-transform: uppercase; margin-bottom: 10px;">Lista de Piezas</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 12px; text-align: center;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="border: 1px solid #ccc; padding: 8px;">Referencia</th>
+                                <th style="border: 1px solid #ccc; padding: 8px;">Medida (${unidadActual})</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${listaCortes.map(p => `
+                                <tr>
+                                    <td style="border: 1px solid #ccc; padding: 8px;">${p.nombre}</td>
+                                    <td style="border: 1px solid #ccc; padding: 8px;">${p.altoFinal} x ${p.anchoFinal}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+                        <div style="flex: 1;">
+                            <h3 style="border-left: 3px solid #000; padding-left: 10px; font-size: 14px; text-transform: uppercase; margin-bottom: 10px;">Inversión</h3>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Madera (${ultimoTotalHojasCalculado} hojas)</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(costoTotalInversion)}</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Herrajes</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(costoHerrajes)}</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Pedacería</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(costoPedaceria > 0 ? costoPedaceria : 0)}</td></tr>
+                                <tr style="background-color: #f0f0f0; font-weight: bold;"><td style="border: 1px solid #ccc; padding: 6px;">Total Taller</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(inversionTotalTaller)}</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Uso Material</td><td style="border: 1px solid #ccc; padding: 6px;">${porcentajeAprovechamiento.toFixed(1)}%</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Desperdicio</td><td style="border: 1px solid #ccc; padding: 6px;">${porcentajeDesperdicio.toFixed(1)}%</td></tr>
+                            </table>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="border-left: 3px solid #000; padding-left: 10px; font-size: 14px; text-transform: uppercase; margin-bottom: 10px;">Retorno & Cliente</h3>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Cobro Madera (x${multiplicadorMO})</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(cobroMelamina)}</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Cobro Herrajes (+${pMargenHerraje}%)</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(cobroHerrajes)}</td></tr>
+                                <tr><td style="border: 1px solid #ccc; padding: 6px;">Ganancia Libre</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(gananciaLibreTotal)}</td></tr>
+                                <tr style="background-color: #f0f0f0; font-weight: bold; font-size: 14px;"><td style="border: 1px solid #ccc; padding: 6px;">Precio Sugerido</td><td style="border: 1px solid #ccc; padding: 6px;">${fm.format(precioVentaSugerido)}</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h3 style="border-left: 3px solid #000; padding-left: 10px; font-size: 14px; text-transform: uppercase; margin-bottom: 20px;">Despiece (${ultimoTotalHojasCalculado} Tableros)</h3>
+                    
+                    <div id="pdf-boards-container">
+                        ${document.getElementById('contenedorHojas').innerHTML}
+                    </div>
+                </div>
+            `;
+
+            // Creamos un DIV invisible para que la librería html2pdf pueda leer este código limpio
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = pdfHtml;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            tempDiv.style.top = '0';
+            
+            // Forzamos los estilos para que los tableros se vean como líneas negras
+            tempDiv.querySelectorAll('.board-card').forEach(card => {
+                card.style.background = '#fff';
+                card.style.border = 'none';
+                card.style.pageBreakInside = 'avoid'; // Evita que se parta a la mitad de una hoja
+                card.style.padding = '0';
+                card.style.marginBottom = '40px';
+                card.querySelectorAll('div, span, strong').forEach(el => el.style.color = '#000');
+            });
+            tempDiv.querySelectorAll('.board-visual').forEach(board => {
+                board.style.border = '2px solid #000';
+            });
+            tempDiv.querySelectorAll('.cut-piece').forEach(piece => {
+                piece.style.background = 'transparent';
+                piece.style.border = '1px solid #000';
+            });
+            tempDiv.querySelectorAll('.piece-label-box').forEach(box => {
+                box.style.background = '#fff';
+                box.style.border = '1px dashed #666';
+            });
+
+            document.body.appendChild(tempDiv);
+
+            const opciones = {
+                margin:       [15, 15, 15, 15], 
+                filename:     'Reporte_Despiece.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 800 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: 'css', avoid: '.board-card' }
+            };
+
+            html2pdf().set(opciones).from(tempDiv.firstElementChild).save().then(() => {
+                document.body.removeChild(tempDiv);
+            }).catch(error => {
+                document.body.removeChild(tempDiv);
+                alert("Ocurrió un error al generar el PDF.");
+            });
         }
         
         function exportarExcel() {
