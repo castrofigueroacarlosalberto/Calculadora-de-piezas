@@ -247,16 +247,63 @@
         }
         .board-title { text-align: left; font-weight: 300; margin-bottom: 10px; color: var(--text-main); font-size: 18px; letter-spacing: -0.5px;}
         
-        /* --- PDF ESTILOS --- */
-        .exporting-pdf #app-container { background: #0a0606 !important; padding: 0 !important; width: 850px !important; margin: 0 auto !important; max-width: none !important; }
-        .exporting-pdf .app-top-header { border-bottom: none !important; margin-bottom: 0 !important; }
-        .exporting-pdf .hide-on-pdf { display: none !important; }
-        .exporting-pdf .unit-selector-container, .exporting-pdf .mod-3-actions, .exporting-pdf th:last-child, .exporting-pdf td:last-child { display: none !important; }
-        .exporting-pdf .table-scroll-container { max-height: none !important; overflow: visible !important; border: 1px solid var(--border-color) !important; margin-bottom: 30px !important; }
-        .exporting-pdf tr { page-break-inside: avoid; }
-        .exporting-pdf .boards-container { display: block !important; }
-        .exporting-pdf .board-visual { page-break-inside: avoid; margin-bottom: 40px !important; }
-        .exporting-pdf .salto-pagina-pdf { page-break-before: always; }
+        /* --- EXPORTACIÓN A PDF EN BLANCO Y NEGRO --- */
+        body.exporting-pdf {
+            --bg-dark: #ffffff;
+            --border-color: #000000;
+            --text-main: #000000;
+            --text-muted: #333333;
+            --neon-green: #000000;
+            --accent-white: #000000;
+            --accent-red: #000000;
+            --accent-yellow: #000000;
+            --accent-soft-red: #000000;
+            --accent-blue: #000000;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: #000000 !important;
+        }
+
+        body.exporting-pdf #app-container { background: #ffffff !important; padding: 0 !important; width: 100% !important; max-width: none !important; margin: 0 auto !important; }
+        body.exporting-pdf .app-top-header { border-bottom: 2px solid #000000 !important; margin-bottom: 20px !important; }
+        
+        /* Volver Logo de Habitat a Color Negro sólido */
+        body.exporting-pdf .logo-habitat {
+            background: none !important;
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+            filter: none !important;
+        }
+        
+        body.exporting-pdf .header-title { color: #000000 !important; border-left-color: #000000 !important; }
+
+        /* Ocultar elementos no deseados */
+        body.exporting-pdf .hide-on-pdf,
+        body.exporting-pdf .unit-selector-container,
+        body.exporting-pdf .mod-3-actions,
+        body.exporting-pdf th:last-child,
+        body.exporting-pdf td:last-child { display: none !important; }
+
+        body.exporting-pdf .config-section { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-bottom: 20px !important;}
+        body.exporting-pdf .styled-header { border-left-color: #000000 !important; background: transparent !important; color: #000000 !important; padding-left: 10px !important;}
+        body.exporting-pdf .styled-header span { color: #555555 !important; }
+
+        /* Estilos Tabla PDF */
+        body.exporting-pdf .table-scroll-container { max-height: none !important; overflow: visible !important; border: 1px solid #000000 !important; background: transparent !important; margin-bottom: 30px !important; }
+        body.exporting-pdf th { background-color: #f0f0f0 !important; color: #000000 !important; border-bottom: 2px solid #000000 !important; }
+        body.exporting-pdf td { border-bottom: 1px solid #dddddd !important; color: #000000 !important; }
+
+        /* Estilos Dashboard PDF */
+        body.exporting-pdf .budget-card { background: transparent !important; border: 1px solid #000000 !important; }
+        body.exporting-pdf .budget-card::before { background: #000000 !important; }
+
+        /* Estilos Planos / Despiece PDF */
+        body.exporting-pdf .board-card { background: transparent !important; border: 1px solid #000000 !important; backdrop-filter: none !important;}
+        body.exporting-pdf .board-visual { border: 2px solid #000000 !important; }
+        body.exporting-pdf .cut-piece { background: transparent !important; border: 1px solid #000000 !important; }
+        body.exporting-pdf .piece-label-box { background: #ffffff !important; border: 1px dashed #000000 !important; }
+
+        body.exporting-pdf .salto-pagina-pdf { page-break-before: always; }
     </style>
 </head>
 <body>
@@ -277,7 +324,7 @@
             </div>
         </div>
         
-        <!-- TOP ROW: Módulo 01 y Módulo 02 alineados con misma altura -->
+        <!-- TOP ROW: Módulo 01 y Módulo 02 (Se ocultan en PDF) -->
         <div class="grid-layout hide-on-pdf" style="margin-top: 10px;">
             
             <!-- IZQUIERDA: Módulo 01 -->
@@ -376,7 +423,6 @@
                     </div>
                 </div>
                 
-                <!-- TÍTULO RESTAR GROSOR ALINEADO A LA IZQUIERDA -->
                 <span class="box-title" style="margin-top: 15px;">Restar Grosor</span>
                 
                 <div class="piece-container">
@@ -405,13 +451,13 @@
             
         </div> <!-- Fin Top Row -->
 
-        <!-- BOTTOM ROW: Módulo 03 Horizontal -->
+        <!-- BOTTOM ROW: Módulo 03 Horizontal (Visible en PDF pero sin botones) -->
         <div class="config-section" style="margin-top: 10px;">
-            <h3 class="styled-header">03 <span>Cola de Trabajo</span></h3>
+            <h3 class="styled-header">03 <span>Lista de Piezas</span></h3>
             
             <div class="mod-3-container" style="display: flex; gap: 30px; align-items: stretch;">
                 
-                <!-- Tabla a la izquierda tomando el mayor espacio posible -->
+                <!-- Tabla a la izquierda -->
                 <div class="table-scroll-container">
                     <table id="tablaCortes">
                         <thead>
@@ -427,26 +473,21 @@
                     </table>
                 </div>
 
-                <!-- Botones y mini dashboard a la derecha -->
+                <!-- Botones y mini dashboard (Ocultos en PDF) -->
                 <div class="mod-3-actions" style="display: flex; flex-direction: column; justify-content: space-between; width: 300px; gap: 15px;">
                     
-                    <!-- NUEVO PANEL DE INFO RAPIDA -->
                     <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
-                        
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
                             <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Total de piezas</span>
                             <span id="contadorPiezas" style="font-size: 24px; color: var(--accent-white); font-weight: 300;">0</span>
                         </div>
-            
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>Grosor de Disco (Kerf) - mm</label>
                             <input type="number" id="inputKerf" value="3" step="0.5" min="0" onchange="actualizarKerf()" style="padding: 10px;">
                         </div>
-            
                         <button class="btn-action btn-clear-list" onclick="vaciarLista()" style="width: 100%; padding: 10px; margin-top: 5px;">Vaciar Lista</button>
                     </div>
 
-                    <!-- Botones de Acción -->
                     <div style="display: flex; flex-direction: column; gap: 15px;">
                         <button class="btn-primary" onclick="optimizarCortes()" style="padding: 16px; font-size: 14px; font-weight: 600;">Generar Despiece</button>
                         <div class="export-container" style="margin-top: 0;">
@@ -546,7 +587,7 @@
             const ancho = parseFloat(document.getElementById('piezaAncho').value) || 0;
             let altoF = Number((alto - (descuentos.top ? grosor : 0) - (descuentos.bottom ? grosor : 0)).toFixed(4));
             let anchoF = Number((ancho - (descuentos.left ? grosor : 0) - (descuentos.right ? grosor : 0)).toFixed(4));
-            document.getElementById('textoMedida').innerHTML = `${altoF}<br><span style="font-size:10px; color:#888;">x</span><br>${anchoF}`;
+            document.getElementById('textoMedida').innerHTML = `${altoF}<br><span style="font-size:10px; color:var(--text-muted);">x</span><br>${anchoF}`;
             
             const visor = document.getElementById('visualizadorPieza');
             
@@ -648,8 +689,8 @@
                 const trStyle = (p.id === idPiezaEnEdicion) ? "background-color: rgba(255, 255, 255, 0.15);" : "";
                 tbody.innerHTML += `
                     <tr style="${trStyle}">
-                        <td style="color:#fff;">${p.nombre}</td>
-                        <td>${p.altoFinal} <span style="color:#888; font-size:10px;">x</span> ${p.anchoFinal}</td>
+                        <td style="color:var(--text-main);">${p.nombre}</td>
+                        <td>${p.altoFinal} <span style="color:var(--text-muted); font-size:10px;">x</span> ${p.anchoFinal}</td>
                         <td>
                             <div class="actions-cell">
                                 <button class="btn-action btn-edit" onclick="editarPieza(${p.id})">Editar</button>
@@ -767,10 +808,10 @@
             setTimeout(() => {
                 const elemento = document.getElementById('app-container');
                 const opciones = {
-                    margin:       [0, 0, 0, 0],
-                    filename:     'Reporte_Operativo.pdf',
+                    margin:       [15, 10, 15, 10], /* Margen agregado para impresión limpia */
+                    filename:     'Reporte_Despiece.pdf',
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 850 },
+                    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
                     pagebreak:    { mode: ['css', 'legacy'] }
                 };
@@ -909,8 +950,8 @@
 
             document.getElementById('resultadosOptimizacion').style.display = 'block';
             document.getElementById('resumenHojas').innerHTML = `
-                <div style="font-weight:300; font-size: 24px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
-                    Esquemas Operativos <span style="font-size:16px; color:#888;">(${hojasUtilizadas.length} Tableros)</span>
+                <div style="font-weight:300; font-size: 24px; border-bottom:1px solid var(--border-color); padding-bottom:10px; color: var(--text-main);">
+                    Despiece <span style="font-size:16px; color:var(--text-muted);">(${hojasUtilizadas.length} Tableros)</span>
                 </div>
             `;
 
@@ -930,13 +971,13 @@
                 const numPiezas = hoja.bloquesAsignados.length;
                 const grosorText = document.getElementById('grosor').options[document.getElementById('grosor').selectedIndex].text;
                 let htmlHoja = `
-                    <div class="board-card" style="background: rgba(15,15,15,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(10px);">
+                    <div class="board-card" style="background: rgba(15,15,15,0.7); border: 1px solid var(--border-color); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(10px);">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
                             <div>
-                                <div style="color: #ffffff; font-size: 20px; font-weight: 400; margin-bottom: 4px;">Tablero 0${index + 1}</div>
-                                <div style="color: #888; font-size: 12px; font-weight: 300; letter-spacing: 0.5px;">Dimensiones: ${hojaH} x ${hojaW} ${unidadActual}</div>
+                                <div style="color: var(--text-main); font-size: 20px; font-weight: 400; margin-bottom: 4px;">Tablero 0${index + 1}</div>
+                                <div style="color: var(--text-muted); font-size: 12px; font-weight: 300; letter-spacing: 0.5px;">Dimensiones: ${hojaH} x ${hojaW} ${unidadActual}</div>
                             </div>
-                            <div style="color: #666; font-size: 16px;">↗</div>
+                            <div style="color: var(--text-muted); font-size: 16px;">↗</div>
                         </div>
 
                         <div class="board-visual" style="width: ${visualW}px; height: ${visualH}px;">
@@ -946,13 +987,13 @@
                     const pH = (b.h - kerfActual) * escala;
                     const pX = b.fit.x * escala;
                     const pY = b.fit.y * escala;
-                    const rotadaText = b.rotated ? `<br><em style="color:var(--accent-white); font-size:9px; font-style: normal; opacity: 0.7;">Rotada</em>` : '';
+                    const rotadaText = b.rotated ? `<br><em style="color:var(--text-muted); font-size:9px; font-style: normal; opacity: 0.7;">Rotada</em>` : '';
 
                     htmlHoja += `
                         <div class="cut-piece" style="left: ${pX}px; top: ${pY}px; width: ${pW}px; height: ${pH}px;">
-                            <div style="background: rgba(15,15,15,0.85); padding: 4px 8px; border-radius: 6px; display:inline-block; border: 1px solid rgba(255,255,255,0.05);">
-                                <strong style="color:var(--accent-white); font-size:11px; font-weight:500; letter-spacing:0.5px;">${b.nombre}</strong><br>
-                                <span style="color:#aaaaaa; font-size:10px;">${b.rotated ? b.originalH : b.originalW} x ${b.rotated ? b.originalW : b.originalH}</span>
+                            <div class="piece-label-box" style="background: rgba(15,15,15,0.85); padding: 4px 8px; border-radius: 6px; display:inline-block; border: 1px solid var(--border-color);">
+                                <strong style="color:var(--text-main); font-size:11px; font-weight:500; letter-spacing:0.5px;">${b.nombre}</strong><br>
+                                <span style="color:var(--text-muted); font-size:10px;">${b.rotated ? b.originalH : b.originalW} x ${b.rotated ? b.originalW : b.originalH}</span>
                                 ${rotadaText}
                             </div>
                         </div>
@@ -962,8 +1003,8 @@
                         </div>
 
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-                            <div style="border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: #fff; font-weight: 500;">Espesor ${grosorText}</div>
-                            <div style="font-size: 12px; color: #888; font-weight: 300;">((•)) ${numPiezas} piezas extraídas</div>
+                            <div style="border: 1px solid var(--border-color); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: var(--text-main); font-weight: 500;">Espesor ${grosorText}</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 300;">((•)) ${numPiezas} piezas extraídas</div>
                         </div>
                     </div>
                 `;
