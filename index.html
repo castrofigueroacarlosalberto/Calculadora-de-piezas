@@ -1,10 +1,30 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Despiece y Optimización de Melamina</title>
+    
+    <!-- FAVICON INTEGRADO (H Dorada con fondo marrón) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23412929'/%3E%3Ctext x='50%25' y='53%25' dominant-baseline='middle' text-anchor='middle' font-family='Helvetica, Arial, sans-serif' font-size='50' fill='%23deb876'%3EH%3C/text%3E%3C/svg%3E">
 
+    <!-- Librería para descargar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* --- PALETA DE COLORES Y TEMA DARK MODERN --- */
         :root {
@@ -61,6 +81,12 @@
             font-size: 14px; font-weight: 300; color: var(--text-muted);
             text-transform: uppercase; letter-spacing: 2px; margin: 0;
             border-left: 1px solid var(--border-color); padding-left: 25px;
+        }
+        @media(max-width: 850px) {
+            .app-top-header { flex-direction: column; gap: 20px; align-items: center; }
+            .header-left { flex-direction: column; gap: 12px; align-items: center; }
+            .header-title { border-left: none; border-top: 1px solid var(--border-color); padding-left: 0; padding-top: 12px; text-align: center; }
+            .logo-habitat { margin-right: 0; padding-left: 14px; }
         }
         
         /* --- HEADERS DE MÓDULO (SIN NÚMERO) --- */
@@ -183,6 +209,7 @@
         
         /* --- PRESUPUESTO ESTILO DASHBOARD --- */
         .budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        @media(max-width: 600px) { .budget-grid { grid-template-columns: 1fr; } }
         .budget-card {
             background: rgba(255,255,255,0.02); border: 1px solid var(--border-color);
             border-radius: 12px; padding: 24px; position: relative; display: flex; flex-direction: column; justify-content: flex-end;
@@ -726,7 +753,7 @@
         }
 
         /* ==================================================================== */
-        /* --- NUEVO: FUNCIÓN NATIVA DE IMPRESIÓN (SOLUCIÓN DEFINITIVA) --- */
+        /* --- FUNCIÓN NATIVA DE IMPRESIÓN (SOLUCIÓN DEFINITIVA) --- */
         /* ==================================================================== */
         function exportarPDFNativo() {
             if (listaCortes.length === 0) { alert("La lista está vacía."); return; }
@@ -786,7 +813,7 @@
                 </table>
             `;
 
-            // 2. Generar Dashboard Financiero a 2 columnas (Inversión y Retorno)
+            // 2. Generar Dashboard Financiero a 2 columnas
             let htmlDashboard = `
                 <div style="display: flex; gap: 20px; margin-bottom: 30px;" class="pdf-avoid-break">
                     <div style="flex: 1;">
@@ -814,7 +841,6 @@
 
             // 3. Generar Planos vectoriales para impresión
             let htmlPlanos = '';
-            // El ancho máximo disponible en A4 (restando márgenes) es ~700px
             const maxW = 680; 
             const escalaPdfW = maxW / hojaW;
             const escalaPdfH = 900 / hojaH;
@@ -856,15 +882,11 @@
                 htmlPlanos += `</div></div>`;
             });
 
-            // Ensamblar todo en el DIV de impresión
+            // Ensamblar todo en el DIV de impresión (SIN SVG CIRCULAR)
             const printDiv = document.getElementById('print-template');
             printDiv.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40">
-                            <circle cx="50" cy="50" r="50" fill="#000"/>
-                            <text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="50" fill="#fff">H</text>
-                        </svg>
+                    <div style="display: flex; align-items: center;">
                         <h1 style="letter-spacing: 8px; font-weight:400; font-size: 24px; margin: 0; text-transform: uppercase;">HÁBITAT</h1>
                     </div>
                     <span style="font-size: 12px; color: #555;">Plataforma de Optimización</span>
@@ -879,7 +901,7 @@
                 ${htmlPlanos}
             `;
 
-            // LLAMAMOS AL MOTOR DE IMPRESIÓN NATIVO DEL NAVEGADOR
+            // Llamamos al motor de impresión nativo del navegador
             window.print();
         }
         
@@ -1077,3 +1099,10 @@
     </script>
 </body>
 </html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
